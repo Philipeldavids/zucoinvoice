@@ -1,0 +1,72 @@
+.invoicelist-container{
+    position: absolute;
+    margin-left: 350px;
+    margin-top: -500px;
+    font-family: "Poppins";
+}
+#createnewbtn{
+    background-color: #1FABFA;
+    margin-top: 0px;
+    
+}
+#invoice-title{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+   
+}
+#shownumber{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100px;
+}
+#numberentry{
+    background-color: #F5F5F5;
+    width:50px;
+}
+#params{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 800px;
+}
+#searchentry{
+    background-color: #F5F5F5;
+    width:200px;
+}
+#search{
+    display: flex;
+    flex-direction: row;
+    width: 280px;
+    justify-content: space-between;
+}
+#invoicelist{
+    display: flex;
+    list-style-type: none;
+    justify-content: space-between;
+    font-weight: bold;
+    width: 800px;
+    margin-left: -35px;
+}
+#invoicelistnav{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width:800px;
+    margin-top: 50px;
+}
+#invoicenavbtn{
+    margin-top: -100px;
+}
+#prevbtn{
+    background-color: white;
+    box-shadow: 0 0 2px 0;
+    color: black;
+}
+#nextbtn{
+    background-color: white;
+    box-shadow: 0 0 2px 0;
+    color: black;
+}

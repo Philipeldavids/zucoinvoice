@@ -1,0 +1,70 @@
+.dashboard-container{
+    background-color: #D5EEFC;
+    width: 300px;
+    height: 600px;
+}
+img{
+    width: 220px;
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.myBusiness{
+    font-size: 18px;
+    font-weight: bold;
+    font-family: Poppins;
+    margin-left: 20px;
+    margin-top: 70px;
+    cursor: pointer;
+}
+
+.menu{
+ margin-top: 40px;
+ display: flex;
+ flex-direction: column;
+ height: 150px;
+ justify-content: space-between;
+}
+#dashboard{
+    width: 23px;
+    height: 23px;
+}
+.dashboard-text{
+    margin-left: 10px;
+    margin-top: 12px;
+    font-size: 20px;
+    cursor: pointer;
+}
+.dropdown-content{
+    cursor: pointer;
+}
+.dropdown-content.show {
+    display: block;
+  }
+  .dropdown-content.hide {
+    display: none;
+  }
+
+  button{
+    width: 150px;
+    height: 40px;
+    padding: 10px 5px 10px 5px;
+    color: white;
+    background-color: #001AFF;
+    border-radius: 5px;   
+    margin: 120px auto;
+    border: none;
+  }
+
+  .navlink{
+    text-decoration: none;
+    color: black;
+  }
+  .navlink:hover{
+    text-decoration: none;
+    color: black;
+  }
+  .navlink:link{
+    text-decoration: none;
+    color: black;
+  }

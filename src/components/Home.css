@@ -1,0 +1,15 @@
+.homeContent{
+    position: absolute;
+    margin-left: 350px;
+    margin-top: -500px;
+    font-family: "Poppins";
+    font-weight: bold;
+}
+.homeContent p{
+margin-top:50px;
+margin-left:30px;
+}
+.homeContent img{
+    width: 500px;
+    height: 300px;
+}

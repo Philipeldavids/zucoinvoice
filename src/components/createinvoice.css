@@ -1,0 +1,121 @@
+.createinvoice-container{
+    position: absolute;
+    margin-left: 350px;
+    margin-top: -500px;
+    font-family: "Poppins";
+    
+}
+#invoicenumber{
+background-color: #F5F5F5;
+width: 100px;
+
+}
+.contactHeader{
+    display: flex;
+    justify-content: space-between;
+    width: 200px;
+}
+#contact{
+    width: 250px;
+    background-color: #F5F5F5;
+}
+#dropdown{
+    margin-left: -25px;
+    margin-top: 20px;
+    width: 30px;
+    height: 30px;
+}
+.logo{
+    position:absolute;
+    background-color: #D5EEFC;
+    padding: 70px 70px 70px 70px;
+    margin-left: 600px;
+    margin-top: -250px;
+}
+.invoiceheading{
+    display: flex;
+    list-style-type: none;
+    width: 700px;
+    justify-content: space-between; 
+    margin-left: -50px;
+    margin-top: 40px;
+}
+.input-heading{
+    display: flex;
+    list-style-type: none;
+    width: 700px;
+    justify-content: space-between; 
+    margin-left: -50px;
+    margin-top: 40px;
+}
+#itemdescription{
+    background-color: #F5F5F5;
+    width: 150px;
+}
+#quantity{
+    background-color:#F5F5F5;
+    width: 100px;
+    margin-left: 30px;
+}
+#unitprice{
+    background-color: #F5F5F5;
+    width: 100px;
+    margin-left: 30px;
+}
+#discount{
+    background-color: #F5F5F5;
+    width: 100px;
+    margin-left: 30px;
+}
+#amount{
+    background-color: #F5F5F5;
+    width: 100px;
+    margin-left:50px;
+}
+
+#delete{
+    width:25px;
+    height:25px;
+    margin-top: 0px;
+}
+#addnewbtn{
+    background-color: #1FABFA;
+    width: 100px;
+    margin-top: -10px;
+    margin-left: -10px;
+}
+#tax{
+    border: 1px solid black;
+    width: 50px;
+}
+#taxdetail{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 120px;
+}
+#totaldetail{
+    margin-left: 400px;
+    margin-top: -100px;
+}
+#total{
+    background-color: #001AFF;
+    width: 70px;
+    color: white;
+    padding: 4px 4px 4px 4px;
+    border-radius: 5px;
+}
+#footnote{
+    width: 800px;
+    height: 100px;
+}
+#actionbtn{
+    display: flex;
+    justify-content: space-between;
+    margin-top: -70px;
+    width:800px;
+    
+}    
+#actionbtn button{
+    background-color: #1FABFA;
+}

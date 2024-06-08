@@ -1,0 +1,92 @@
+.signup-container{
+    background-color: #1FABFA;
+    width: 350px;
+    height: 600px;
+    border-radius: 10px;
+    margin: auto;
+    align-items: center;
+}
+label{
+    color: white;
+    font-size: medium;
+    margin-bottom: 20px;
+    font-family: Poppins;
+    font-weight: normal;
+  }
+  input{
+    border-radius: 7px;
+    height: 30px;
+    width:270px;
+    border:none;
+    margin-top: 10px;
+  
+  }
+  input:focus{
+    outline: none;
+}
+  .signup-form{
+    justify-content: center;
+    margin-left: 35px;
+    margin-top: 20px;
+    justify-items: center;
+  }
+  .start{
+    color: white;
+    margin-left: 35px;
+    margin-top: 15px;
+    font-size: large;
+    font-family: Poppins;
+    font-weight: bold;
+  }
+  .start2{
+    color: white;
+    margin-left: 35px;
+    font-size: medium;
+    font-family: Poppins;
+    font-weight:lighter;
+  }
+  .phone-card{
+    width: 50px;
+
+  }
+  .telephone{
+    width: 210px;
+    margin-left: 10px;
+  }
+  .material-icons{
+    font-weight: lighter;
+    font-size:large;
+    position: absolute;
+    margin-left: -25px;
+    margin-top: 17px;
+  }
+  .underlay{
+    color: white;
+    font-size: 10px;
+    font-family: Poppins;
+    font-weight: lighter;
+    margin-left: -15px;
+    margin-top: 25px;
+  }
+  #createaccount{
+    width: 270px;
+    background-color: white;
+    border: none;
+    border-radius: 10px;
+    height: 30px;
+    font-family: Poppins;
+    font-weight: bold;
+    font-size: small;
+    color:#1FABFA;
+    margin-top: -50px;
+  }
+  .sign-in{
+    color: white;
+    margin:auto;
+    font-family: Poppins;
+    font-size: small;
+    font-weight: bold;    
+    width: 270px;
+    margin-top: -80px;
+    margin-left: 110px;
+  }

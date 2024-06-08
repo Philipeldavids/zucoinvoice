@@ -1,0 +1,31 @@
+.header{
+    display: flex;
+    flex-direction: row;
+    margin-left: 1000px;
+    justify-content: space-between;
+    width: 180px;
+    position: absolute;
+    line-height: normal;
+    vertical-align: middle;
+}
+.user{
+    display: flex;
+    flex-direction: row;
+    width: 140px;
+    justify-content: space-between;
+    cursor: pointer;
+}
+.header p{
+    padding-top: 8px;
+    font-size:medium;
+    font-family: Poppins;
+}
+#image1{
+    width:25px;
+    height:25px;
+   
+}
+#image2{
+    width:25px;
+    height:25px;
+}
