@@ -1,7 +1,7 @@
 .createinvoice-container{
-    position: absolute;
+    position: relative;
     margin-left: 350px;
-    margin-top: -500px;
+    margin-top:  -800px;
     font-family: "Poppins";
     
 }
@@ -17,6 +17,7 @@ width: 100px;
 }
 #contact{
     width: 250px;
+    height: 25px;
     background-color: #F5F5F5;
 }
 #dropdown{
@@ -26,16 +27,28 @@ width: 100px;
     height: 30px;
 }
 .logo{
-    position:absolute;
+    position:absolute;    
     background-color: #D5EEFC;
-    padding: 70px 70px 70px 70px;
+    width: 180px;
+    height: 180px;
+    align-content: center;    
     margin-left: 600px;
+    padding-left: 60px;
     margin-top: -250px;
 }
 .invoiceheading{
     display: flex;
     list-style-type: none;
     width: 700px;
+    justify-content: space-between; 
+    margin-left: -50px;
+    margin-top: 40px;
+}
+.input-loading{
+    display: flex;
+    list-style-type: none;
+    width: 800px;
+    align-items: center;
     justify-content: space-between; 
     margin-left: -50px;
     margin-top: 40px;
@@ -81,8 +94,8 @@ width: 100px;
 #addnewbtn{
     background-color: #1FABFA;
     width: 100px;
-    margin-top: -10px;
-    margin-left: -10px;
+    margin-top: 10px;
+    margin-left: 20px;
 }
 #tax{
     border: 1px solid black;
@@ -96,7 +109,7 @@ width: 100px;
 }
 #totaldetail{
     margin-left: 400px;
-    margin-top: -100px;
+    margin-top: 100px;
 }
 #total{
     background-color: #001AFF;
@@ -112,7 +125,7 @@ width: 100px;
 #actionbtn{
     display: flex;
     justify-content: space-between;
-    margin-top: -70px;
+    margin-top: 50px;
     width:800px;
     
 }    

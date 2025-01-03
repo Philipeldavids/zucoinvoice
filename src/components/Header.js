@@ -24,14 +24,14 @@ function Header() {
     navigate('/login');
   };
   return (
-    <div className='header'>
+    <div className='header'>      
     <img id='image1' src={Image} alt='notification'/>
     <nav className='user'>
     <Select>
     {/* <img id='image2' src ={Image2} alt ='user'/>  */}
           <MenuItem value="logout" onClick= {handleLogout}>LOGOUT</MenuItem>
       </Select>
-    <p>{user?.firstName+' '+user?.lastName}</p>
+    <p>{user?.email}</p>
     </nav>
     </div>
   )

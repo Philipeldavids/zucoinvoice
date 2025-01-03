@@ -50,8 +50,9 @@ label{
 
   }
   .telephone{
-    width: 210px;
-    margin-left: 10px;
+    width: 250px;
+    margin-left: 50px;
+    
   }
   .material-icons{
     font-weight: lighter;

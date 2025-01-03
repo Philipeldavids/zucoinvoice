@@ -32,7 +32,7 @@ function Login() {
       if(response.status === 200){
         
        sessionStorage.setItem('user', JSON.stringify(response.data))
-        navigate("/home");
+        navigate("/dashboard");
       }
       else{
         alert('Authentication failed');
