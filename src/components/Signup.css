@@ -57,9 +57,9 @@ label{
   .material-icons{
     font-weight: lighter;
     font-size:large;
-    position: absolute;
+    position: relative;
     margin-left: -25px;
-    margin-top: 17px;
+    margin-top: 15px;
   }
   .underlay{
     color: white;

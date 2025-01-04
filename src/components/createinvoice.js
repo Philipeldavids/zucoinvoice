@@ -5,7 +5,10 @@ import DashBoardLayout from './DashBoardLayout'
 import './createinvoice.css'
 import Image from '../assets/dropdown-arrow-svgrepo-com 1.png'
 import Image2 from '../assets/Frame.png'
-
+import { useNavigate } from 'react-router-dom';
+import { v4 as uuidv4 } from "uuid";
+import { useInvoice } from "../context/InvoiceContext";
+import { Modal, Button } from 'react-bootstrap';
 function CreateInvoice() {
 
     const [invoiceno, setInvoiceno] = useState('');
@@ -17,17 +20,66 @@ function CreateInvoice() {
     const [amount, setAmount] = useState('');
     const [subTotal, setSubTotal] = useState('');
     const [tax, setTax] = useState('');
-    const [Total, setTotal] = useState('');
-    const createdDate = new Date().getUTCDate;
+    const [Total, setTotal] = useState('');    
     const [footnote, setFootnote] = useState('');
     const [items, setItems] = useState([]);
     const [showItem, setShowItem] = useState(false);
     const [contacts, setContacts] = useState([]);    
     const [selectedFile, setSelectedFile] = useState(null);
     const [preview, setPreview] = useState(null);
+    const { setInvoiceId } = useInvoice();
+    //contact
+    const [show, setShow] = useState(false);     
+    const [user, setUser] = useState();
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [address, setAddress] = useState('');
+    const [phonenumber, setPhoneNumber] = useState('');
 
+    const ADDCONTACT_URL = "api/Contact/AddContact";
     const GETCONTACTS_URL = "api/Contact/GetContactByUser/";
     const GETINVNUMBER_URL = "api/v1/Invoice/GetInvoiceNumber";
+    const navigate = useNavigate();
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
+     useEffect(() => {
+            const loggedInUser = sessionStorage.getItem("user");
+            if (loggedInUser) {
+              const foundUser = JSON.parse(loggedInUser);         
+              setUser(foundUser); 
+              getContact(foundUser?.id);
+              getInvoiceNumber();                      
+            }
+          }, []);
+    const handleSubmit = async() => {
+            
+            try{
+                var response = await axios.post(ADDCONTACT_URL, {
+    
+                    customerName: name,
+                    customerEmail: email,
+                    customerAddress: address,
+                    customerPhoneNumber : phonenumber,
+                    userId: user?.id
+                },
+                   {
+                headers: {
+                  "Content-Type": "Application/json"
+                }   
+            });
+                if(response.status === 200){
+                    handleClose();
+                    alert("Contact created successfully");
+                    getContact(user?.id);           
+                }
+    
+            }
+            catch(error){
+                console.log("error:", error)
+            }       
+        };
 
     useEffect(() => {
         const subTota = items.reduce((acc, element) => acc + parseFloat(element.amount || 0), 0);
@@ -46,14 +98,7 @@ function CreateInvoice() {
 
       }, [items, tax]);
 
-    useEffect(() => {
-            const loggedInUser = sessionStorage.getItem("user");
-            if (loggedInUser) {
-              const foundUser = JSON.parse(loggedInUser);         
-              getContact(foundUser?.id);
-              getInvoiceNumber();
-            }
-          }, []);
+  
 
           const getInvoiceNumber = async () =>{
             try{
@@ -61,8 +106,10 @@ function CreateInvoice() {
                 if(response.status === 200){
 
                     var prefix = "#INV";
-                    var invNo = prefix + response.data.toString();
-                    setInvoiceno(invNo);
+                    var invNo = response.data;
+                    invNo++;
+                    var invoiceNo = prefix + invNo.toString();
+                    setInvoiceno(invoiceNo);
                 }
             }
             catch(error){
@@ -94,11 +141,11 @@ function CreateInvoice() {
               
         if(description.trim() && quantity.trim() && price.trim() && discount.trim()){
             
-            setItems([...items, { id: items.length + 1, 
+            setItems([...items, { id: uuidv4(), 
                                 description: description,
                                 quantity : quantity,
-                                unitprice: price,
                                 discount: discount,
+                                unitprice: price,                                
                                 amount: amount }]);
 
 
@@ -163,24 +210,32 @@ function CreateInvoice() {
     const handleDiscard = () =>{
 
     }
-    const CREATE_URL = 'api/v1/invoice/create';
-    const handleCreate = async() =>{
-        try{
-            const response = await axios.post(CREATE_URL, {
-              invoiceNumber: invoiceno,
-              contactId: contact.contactId,
-                createdDate: createdDate,
-                 
 
-          }, {
-            // headers: {
-            //   "Content-Type": "Application/json"
-            // }
-      
+
+    const CREATE_URL = 'api/v1/Invoice/Create';
+    const handleCreate = async(e) =>{
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append('image', selectedFile);
+        formData.append('invoiceNumber', invoiceno);
+        formData.append('contactName', contact);        
+        formData.append('tax', tax);
+        formData.append('footNote', footnote);
+        formData.append('totalPrice', Total);        
+        formData.append('items', JSON.stringify(items));
+        formData.append('userId', user?.id);
+        
+        try{
+            const response = await axios.post(CREATE_URL, formData, {
+            headers: {
+                accept: '*/*',
+              "Content-Type": 'multipart/form-data',
+            }      
             
           });
             if(response.status === 200){
-              
+                setInvoiceId(response.data.invoiceID);
+                navigate("/invoicepage");
                 alert('Invoice Creation Successful');
             }
             else{
@@ -190,19 +245,19 @@ function CreateInvoice() {
           catch(error){
             console.error('Creation error:', error);
           }
-    }
+    };
 
   return (
     <>
     <DashBoardLayout/>
-    <form>
+    <form method="post" enctype="multipart/form-data">
     <div className='createinvoice-container'>
     <h4>Invoice</h4><br/>
     <p>Invoice Number</p>
     <input value={invoiceno} type='text' id='invoicenumber' readOnly></input>
     <div className='contactHeader'>
         <p>TO:</p>
-        <p>Add Contact</p>
+        <a onClick={handleShow} style={{ cursor: 'pointer'}}>Add Contact</a>
     </div>
     <select value={contact} onChange={(e)=>setContact(e.target.value)} type='text' id='contact'>
         <option>select contact</option>
@@ -269,7 +324,7 @@ function CreateInvoice() {
     </div>
     <div>
         <p>FOOTNOTE</p>
-        <textarea value={footnote} onChange={(e)=> setFootnote(e.target.value)}id='footnote'></textarea>
+        <textarea value={footnote} onChange={(e) => setFootnote(e.target.value)} id='footnote'></textarea>
     </div>
     <div id='actionbtn'>
         <button onClick={handleDiscard}>DISCARD</button>
@@ -277,6 +332,35 @@ function CreateInvoice() {
     </div>
     </div>
     </form>
+
+    <Modal show={show} onHide={handleClose}>
+                    <Modal.Header closeButton>
+                    <Modal.Title>Add A Contact Detail</Modal.Title>
+                </Modal.Header>
+                <form>
+                <Modal.Body>
+                    <div>
+                        <Modal.Title>Name</Modal.Title><br/> 
+                        <input type="text" onChange={(e)=> setName(e.target.value)} placeholder='Name' value={name}></input><br/>
+                        <Modal.Title>Email</Modal.Title><br/>
+                        <input type="text" onChange={(e)=> setEmail(e.target.value)} placeholder='Email' value={email}></input><br/>
+                        <Modal.Title>Address</Modal.Title><br/>
+                        <input type="text" onChange={(e)=> setAddress(e.target.value)} placeholder='Address' value={address}></input><br/>
+                        <Modal.Title>PhoneNumber</Modal.Title><br/>
+                        <input type="text" onChange={(e)=> setPhoneNumber(e.target.value)} placeholder='PhoneNumber' value={phonenumber}></input>
+                    </div>
+                
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Close
+                    </Button>
+                    <Button variant="primary" onClick={handleSubmit}>
+                        Save Changes
+                    </Button>
+                </Modal.Footer>
+                </form>
+            </Modal>
     </>
     
   )

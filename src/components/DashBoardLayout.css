@@ -12,6 +12,7 @@ img{
 
 .myBusiness{
     font-size: 18px;
+    text-decoration: none;
     font-weight: bold;
     font-family: Poppins;
     margin-left: 20px;
@@ -56,6 +57,7 @@ img{
     border: none;
   }
 
+  
   .navlink{
     text-decoration: none;
     color: black;

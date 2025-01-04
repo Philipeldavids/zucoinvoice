@@ -1,12 +1,15 @@
 .login-page{
     background-color: #1FABFA;
     width:320px;
-    height: 370px;
+    height: 400px;
     margin:auto;
     border-radius: 10px;
     margin-top: 120px;
     justify-items: center;
     align-items: center;
+  }
+  .login-container{
+    position:absolute;
   }
   .welcome{
     color: white;
@@ -65,7 +68,7 @@
   .login-form{
   justify-content: center;
   margin-left: 35px;
-  margin-top: 20px;
+  margin-top: 5px;
   position: absolute;
   
   }
@@ -80,7 +83,7 @@
     display: flex;
     justify-content: space-between;
     width: 250px;
-    margin-top: 20px;
+    margin-top: 10px;
   }
   .button{
     background-color: white;
