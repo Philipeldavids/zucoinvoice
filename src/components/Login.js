@@ -77,8 +77,7 @@ function Login() {
         navigate("/dashboard");
       }
       else{
-        alert('Authentication failed');
-        return;
+        alert('Authentication failed');      
       }
     }
     catch(error){
