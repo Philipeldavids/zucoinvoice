@@ -9,6 +9,7 @@ function Login() {
   const [formValues, setFormValues] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
   const [visible, setVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
 
 
    // Handle input change
@@ -48,6 +49,7 @@ function Login() {
 
   const handleLogin = async (event)=>{  
     event.preventDefault();
+    setLoading(true)
 
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
@@ -81,6 +83,9 @@ function Login() {
     }
     catch(error){
       console.error('Login error:', error);
+    }
+    finally{
+      setLoading(false);
     }
   }
   return (
@@ -122,7 +127,8 @@ function Login() {
           </div><br/>
 
           <div className='login-signup'>
-          <button type='submit' className='button'onClick={(event)=>handleLogin(event)} >Sign In</button>
+          {loading && <div className='spinner'></div>}  
+          <button type='submit' className='button'onClick={(event)=>handleLogin(event)} disabled={loading}>Sign In</button>
           <NavLink to='/'>Sign Up</NavLink>
           
           </div>
