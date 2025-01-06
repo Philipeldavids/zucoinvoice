@@ -1,9 +1,9 @@
 .signup-container{
     background-color: #1FABFA;
-    width: 350px;
-    height: 600px;
+    width: 400px;
+    height: 630px;
     border-radius: 10px;
-    margin: auto;
+    margin: 10px auto;
     align-items: center;
 }
 label{

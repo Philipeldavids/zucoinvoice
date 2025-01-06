@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react'
-import Image from '../assets/zuco invoice app logo 1.png'
+import Image from '../assets/zucoinvoiceapplogo.png'
 import Image2 from '../assets/business 1.png'
 import Image3 from '../assets/invoice 1.png'
 import Image4 from '../assets/Vector.png'
+import Image5 from '../assets/settings-svgrepo-com.png'
 import { NavLink } from 'react-router-dom'
 import './DashBoardLayout.css'
 import Header from './Header'
@@ -15,19 +16,16 @@ function DashBoardLayout() {
   const [show, setShow] = useState(false);   
   const [isOpen, setIsOpen] = useState(false);
   const [text, setText] = useState("");
-  const [businessName, setBusinessName] = useState(false);
-  const [user, setUser] = useState();   
+  const [user, setUser] = useState();
+  const [showBusiness, setShowBusiness] = useState(false);
+  const [company, setCompany] = useState();
   
     useEffect(() => {
       const loggedInUser = sessionStorage.getItem("user");
       if (loggedInUser) {
-        const foundUser = JSON.parse(loggedInUser);
-        console.log(foundUser);
-        setUser(foundUser);        
-        setBusinessName(true);
-        if(loggedInUser?.company === null){
-          setBusinessName(false);
-        }
+        const foundUser = JSON.parse(loggedInUser);       
+        setUser(foundUser);
+        setShowBusiness(true);     
       }
     }, []);
 
@@ -49,10 +47,12 @@ function DashBoardLayout() {
   
         
       });
-        if(response.status === 200){         
+        if(response.status === 200){        
         
+        setUser(response.data);        
         alert('Registration successful');
         handleClose();
+                
         }
         else{
           alert('Registration failed');
@@ -75,7 +75,7 @@ function DashBoardLayout() {
         <img src={Image} alt='My Logo' />
         <br/><br/>
 
-          {businessName ?
+          {showBusiness ?
            <a variant="primary" onClick={handleShow}className='myBusiness'>+ {user?.company}</a> :
            <a variant="primary" onClick={handleShow}className='myBusiness'>+ My Business</a>}
           
@@ -98,6 +98,10 @@ function DashBoardLayout() {
             <div style={{display:"flex", alignItems: 'center', flexDirection: 'row'}}>
             <img id='dashboard' src={Image4} alt='Dashboard'/>
             <span className='dashboard-text'><NavLink className='navlink' to='/contact'>Contact</NavLink></span>
+            </div>
+            <div style={{display:"flex", alignItems: 'center', flexDirection: 'row'}}>
+            <img id='dashboard' src={Image5} alt='Dashboard'/>
+            <span className='dashboard-text'><NavLink className='navlink' to='/usersettings'>Settings</NavLink></span>
             </div>
             <div style={{ marginTop: 80, marginLeft: 50 }}>
             <button>Subscription</button>

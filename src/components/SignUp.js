@@ -3,7 +3,7 @@ import './Signup.css';
 import {useState, useEffect} from 'react'
 import axios from '../api/axios'
 import {NavLink, useNavigate} from 'react-router-dom'
-//import Select  from 'react-select'
+import Select  from 'react-select';
 import Flag from 'react-world-flags'
 
 function SignUp() {
@@ -13,8 +13,12 @@ function SignUp() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [selectedOption, setSelectedOption] = useState();
   const [countriesList, setCountriesList] = useState([]);
+  const [visible, setVisible] = useState(false);
   const navigate = useNavigate();
 
+  const togglePasswordVisibility = () => {
+    setVisible(!visible);
+  };
   
   useEffect(() => {
     const fetchData = async () => {
@@ -44,51 +48,35 @@ function SignUp() {
     setSelectedOption(selectedOption);
   };
    
-    if(phoneNumber.startsWith(0)){
-      phoneNumber.slice(1);
-    }
-
-    const pNumber = `${selectedOption}${phoneNumber}`;
-    console.log(pNumber)
+   
     
-  
-  // const customStyles = {
-  //   option: (provided) => ({
-  //     ...provided,
-  //     display: 'flex',
-  //     alignItems: 'center',
-  //     width:20
-
-      
-  //   }),
-  //   singleValue: (provided) => ({
-  //     ...provided,
-  //     display: 'flex',
-  //     alignItems: 'center',       
-  //   }),
-  // };
-
-  
-
-  // const options = countriesList.map((country) => ({
-  //   value: ( <Flag code= {country.code} />),
-  //   label: (
-  //     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-  //       {/* <Flag code= {country.code} /> */}
-  //       <span>{country.name}</span>
-  //       <span>{country.dial_code}</span> 
-  //     </div>
-  //   ),
-  // }));
+ 
 
   const sortedItems = countriesList.sort((a, b) => a.name.localeCompare(b.name));
 
-  
+  const options = sortedItems.map((country) => ({
+    value: country.dial_code,
+    label: `${country.name} (${country.dial_code})`,
+    customLabel: (
+      <div style={{ display: "flex", alignItems: "center", width: "100px" }}>
+        <Flag code={country.code} style={{ width: "40px", marginRight: "9px", marginLeft: "-3px", marginTop: "-1px"}} />
+        <span>{country.name}</span>
+        <span style={{ marginLeft: "auto" }}>{country.dial_code}</span>
+      </div>
+    ),    
+  }));
 
   //Handle SIgnIn
   const REGISTER_URL = '/api/Auth/AddUser';
 
   const handleSignIn = async () => {
+
+    if(phoneNumber.startsWith(0)){
+      phoneNumber.slice(1);
+    }
+
+    const pNumber = `${selectedOption}${phoneNumber}`;
+    console.log(pNumber);
       try{
         var response = await axios.post(REGISTER_URL, {
           email: username,
@@ -103,7 +91,9 @@ function SignUp() {
   
         
       });
-        if(response.status === 200){         
+        if(response.status === 200){ 
+          
+          alert("Registration successful");
           navigate("/login");
         }
         else{
@@ -126,41 +116,37 @@ function SignUp() {
         </div>
         
         <form className='signup-form'>
-        <label>Email Address</label><br/>
+        <label>Email Address</label>
         <input type='text' value={username} onChange={(e) => setUserName(e.target.value)}placeholder='Email Address'/><br/><br/>
-        <label>PhoneNumber</label><br/>
-        <div style={{display: 'flex', width: 300, marginLeft: -30, alignItems: 'center'}}>
-        {/* <Select
-            styles={customStyles}
-            options = {options}                  
-            onChange={handleChange}
-            value={selectedOption}            
-          /> */}
-           <select onChange={handleChange} style={{ width: '30px', height: '20px' }} value={selectedOption}>
-        {sortedItems.map((country) => (
-          <option key={country.code} value={country.dial_code}>
-          <Flag code= {country.code} />
-          <span>{country.name}</span>
-          <span>{country.dial_code}</span> 
-          </option>
-        ))}
-        </select>
-          {/* {selectedOption && (
-            <p>
-               {selectedOption.value}
-            </p>
-          )} */}
+        <label>PhoneNumber</label>
+        <div style={{display: 'flex', width: 300, marginLeft: -50, alignItems: 'center'}}>
+        <Select
+          options={options}
+          value={options.find((option) => option.value === selectedOption)}
+          filterOption={(candidate, input) => 
+            candidate.data.label.toLowerCase().includes(input.toLowerCase())}
+          onChange={(selected) => setSelectedOption(selected.value)}
+          getOptionLabel={(e) => e.customLabel}        
+          styles={{
+            control: (base) => ({ ...base, width: 100 }),
+          }}
+    />
         <input type='tel' value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)}placeholder='Enter PhoneNumber' className='telephone'/><br/><br/>
-        </div>
+        </div><br/>
         <label>Password</label><br/>
         <input type='password' value={password} onChange={(e) => setPassword(e.target.value)}placeholder='Password'/>
-        <i className="material-icons">visibility_off</i><br/><br/>
-        <label>Confirm Password</label><br/>
+        <i className={`material-icons ${visible ? 'visible' : 'hidden'}`}  
+          onClick={togglePasswordVisibility}          
+          >
+            {visible ? 'visibility' : 'visibility_off'}</i><br/><br/>
+        <label>Confirm Password</label>
         <input type='password' value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}placeholder='Password'/>
-        <i className="material-icons">visibility_off</i><br/>
-        <p className='underlay'>By creating an account you agree to our <span>Terms and Conditions</span></p><br/>
-        <button type='submit' onClick={handleSignIn} id='createaccount'>Create Account</button><br/>
-        <p className='sign-in'>Sign In</p>
+        <i className={`material-icons ${visible ? 'visible' : 'hidden'}`}  
+          onClick={togglePasswordVisibility}          
+          >
+            {visible ? 'visibility' : 'visibility_off'}</i><br/>
+        <p className='underlay'>By creating an account you agree to our <span>Terms and Conditions</span></p>
+        <button type='submit' onClick={handleSignIn} id='createaccount'>Create Account</button><br/>        
         </form>
         
         

@@ -3,16 +3,15 @@ import axios from '../api/axios';
 import { useInvoice } from "../context/InvoiceContext";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import './InvoicePage.css';
+import DashBoardLayout from './DashBoardLayout';
+import logo from '../assets/zucoinvoiceapplogo.png';
 
 function InvoicePage() {
 
     const { invoiceId } = useInvoice();
     const[invoice, setInvoice] = useState({});
     const [formattedValue, setFormattedValue] = useState(""); // Formatted output
-
-    
-
-      
 
     useEffect(()=>{
         const fetchInvoice = async () =>{
@@ -64,14 +63,14 @@ function InvoicePage() {
       
         doc.autoTable({
           startY: 70,
-          head: [["Description", "Quantity", "Price(NGN)", "Total(NGN)"]],
+          head: [["Description", "Quantity", "Price", "Total"]],
           body: tableData,
         });
       
         // Add total and tax
         if (!isNaN(invoice.totalPrice)) {
             // Format as currency
-            const formatted = new Intl.NumberFormat("en-US", {
+            const formatted = new Intl.NumberFormat("en-NG", {
               style: "currency",
               currency: "NGN",
               minimumFractionDigits: 2,
@@ -84,15 +83,25 @@ function InvoicePage() {
         
         const finalY = doc.lastAutoTable.finalY + 10;
         doc.text(`Tax: %${invoice.tax}`, 20, finalY);
-        doc.text(`Total(NGN): ${formattedValue}`, 20, finalY + 10);
+        doc.text(`Total: ${formattedValue}`, 20, finalY + 10);
       
         // Add footer
         doc.setFontSize(10);
         doc.text(invoice.footNote || "Thank you for your business!", 20, finalY + 30);
       
-//         const pdfBlob = doc.output("blob");
-// console.log(pdfBlob); // Check if it's a valid Blob object
-// console.log(pdfBlob instanceof Blob); // Should log `true`
+        //add logo
+        //const logoPath = "C:/Users/USER/zucoinvoice/zucoinvoice/src/assets/zucoinvoiceapplogo.png"; // Adjust the path as needed
+        
+  // Fetch the image
+        const response = await fetch(logo);
+        const blob2 = await response.blob();
+        const base64data2 = await new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(blob2);
+        });
+        doc.addImage(base64data2, "PNG", 80, 200, 50, 50);
 
         // Return the PDF as a blob
         const pdfData = doc.output("arraybuffer"); // Get PDF data as an ArrayBuffer
@@ -123,9 +132,14 @@ function InvoicePage() {
 
   return (
     <div>
+        <DashBoardLayout/>
+    <div className="invoice-container">
       <h1>Invoice</h1>
+      <div style={{ display: "flex", width: "400px", justifyContent: "space-between", marginTop: "30px" }}>
       <button onClick={viewPDF}>View Invoice</button>
       <button onClick={downloadPDF}>Download Invoice</button>
+      </div>
+      </div>
     </div>
   );
 };

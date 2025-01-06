@@ -183,7 +183,7 @@ function CreateInvoice() {
         const handleFileChange = (event) => {
             const file = event.target.files[0];
             if (file) {
-                setSelectedFile(file);
+                setSelectedFile(file);                
                 setPreview(URL.createObjectURL(file)); // Generate preview URL
               }
           };
@@ -235,6 +235,7 @@ function CreateInvoice() {
           });
             if(response.status === 200){
                 setInvoiceId(response.data.invoiceID);
+                setPreview(response.data.imageURl);
                 navigate("/invoicepage");
                 alert('Invoice Creation Successful');
             }
@@ -310,7 +311,7 @@ function CreateInvoice() {
             <li><input type='text' value={price} onChange={(e)=>setPrice(e.target.value)} id='unitprice'placeholder='0'></input></li>
             <li><input type='text' value={discount}  onChange={(e)=>setDiscount(e.target.value)} onKeyUp={handleCalc} id='discount'placeholder='0'></input></li>
             <li><input type='text' value={amount} id='amount'placeholder='0'readOnly></input></li>
-            <button type='submit' onClick={addItem} id='addnewbtn'>ADD</button>
+            <button type='submit' onClick={addItem} className='addnewbtn'>ADD</button>
         </ul>
         </div>
     

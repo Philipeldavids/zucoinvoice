@@ -52,6 +52,16 @@
     margin-left: -35px;
     margin-top: 30px;
 }
+
+#invoicelistitem{
+    display: flex;
+    list-style-type: none;
+    justify-content: space-between;
+    align-content: center;
+    width: 900px;
+    margin-left: -35px;
+    margin-top: 30px;
+}
 #invoicelistnav{
     display: flex;
     flex-direction: row;

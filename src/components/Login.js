@@ -10,6 +10,7 @@ function Login() {
   const [errors, setErrors] = useState({});
   const [visible, setVisible] = useState(false);
 
+
    // Handle input change
    const handleChange = (e) => {
     const { name, value } = e.target;
@@ -75,6 +76,7 @@ function Login() {
       }
       else{
         alert('Authentication failed');
+        return;
       }
     }
     catch(error){
@@ -121,7 +123,7 @@ function Login() {
 
           <div className='login-signup'>
           <button type='submit' className='button'onClick={(event)=>handleLogin(event)} >Sign In</button>
-          <NavLink to='/signup'>Sign Up</NavLink>
+          <NavLink to='/'>Sign Up</NavLink>
           
           </div>
         </form>
