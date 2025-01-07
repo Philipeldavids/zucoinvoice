@@ -20,6 +20,7 @@ function InvoicePage() {
             if(response.status === 200){
                 console.log(response.data);
                 setInvoice(response.data);
+                generatePDF(response.data);
             }
         } 
         fetchInvoice();
