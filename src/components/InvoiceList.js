@@ -96,7 +96,7 @@ function InvoiceList() {
                     <li>Action</li>
                 </ul>
                 {show ? (results.map((invoice)=> (
-                    <ul key={invoice.userId} id='invoicelistitem'>
+                    <ul key={invoice.invoiceID} id='invoicelistitem'>
                     <li>{invoice.invoiceNumber}</li>
                     <li>{invoice.client}</li>
                     <li>{invoice.createdDate}</li>                    
@@ -104,7 +104,7 @@ function InvoiceList() {
                     <li><img src={Image} alt='delete' id='delete'/><button type='submit' className='addnewbtn'>Download</button></li>
                 </ul>))) : 
                     (invoices.map((invoice)=> (
-                        <ul key={invoice.userId} id='invoicelistitem'>
+                        <ul key={invoice.invoiceID} id='invoicelistitem'>
                         <li>{invoice.invoiceNumber}</li>
                         <li>{invoice.client}</li>
                         <li>{invoice.createdDate}</li>                    
