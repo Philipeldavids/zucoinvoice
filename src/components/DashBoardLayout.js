@@ -83,7 +83,7 @@ function DashBoardLayout() {
 
         <div className='menu'>
             <div style={{display:"flex", alignItems: 'center', flexDirection: 'row'}}>
-            <img id='dashboard' src={Image2} alt='Dashboard'/>
+            <img className='dashboard' src={Image2} alt='Dashboard'/>
             <span className='dashboard-text' onClick={toggleDropdown}>Dashboard</span>
             </div>
             <div className={`dropdown-content ${isOpen ? 'show' : 'hide'}`}>
@@ -92,15 +92,15 @@ function DashBoardLayout() {
             </ul>
             </div>
             <div style={{display:"flex", alignItems: 'center', flexDirection: 'row'}}>
-            <img id='dashboard' src={Image3} alt='Dashboard'/>
+            <img className='dashboard' src={Image3} alt='Dashboard'/>
             <span className='dashboard-text'><NavLink className='navlink' to='/InvoiceList'>Invoices</NavLink></span>
             </div>
             <div style={{display:"flex", alignItems: 'center', flexDirection: 'row'}}>
-            <img id='dashboard' src={Image4} alt='Dashboard'/>
+            <img className='dashboard' src={Image4} alt='Dashboard'/>
             <span className='dashboard-text'><NavLink className='navlink' to='/contact'>Contact</NavLink></span>
             </div>
             <div style={{display:"flex", alignItems: 'center', flexDirection: 'row'}}>
-            <img id='dashboard' src={Image5} alt='Dashboard'/>
+            <img className='dashboard' src={Image5} alt='Dashboard'/>
             <span className='dashboard-text'><NavLink className='navlink' to='/usersettings'>Settings</NavLink></span>
             </div>
             <div style={{ marginTop: 80, marginLeft: 50 }}>

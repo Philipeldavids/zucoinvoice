@@ -27,7 +27,7 @@ img{
  height: 150px;
  justify-content: space-between;
 }
-#dashboard{
+.dashboard{
     width: 23px;
     height: 23px;
 }

@@ -168,7 +168,7 @@ function CreateInvoice() {
        //handle delete item
 
        const handleDelete = (id)=>{
-        setItems(items.filter(x=>x.id != id))
+        setItems(items.filter(x=>x.id !== id))
        }
        
    
@@ -192,7 +192,7 @@ function CreateInvoice() {
     const handleCalc = (e)=>{
        
         var amount = 0;
-        if(discount != ''){
+        if(discount !== ''){
             
             amount = parseFloat(quantity) * parseFloat(price) - parseFloat(discount);  
         }
