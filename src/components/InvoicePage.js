@@ -10,7 +10,7 @@ import logo from '../assets/zucoinvoiceapplogo.png';
 function InvoicePage() {
 
     const { invoiceId } = useInvoice();
-    const[invoice, setInvoice] = useState({});
+    const[invoice, setInvoice] = useState([]);
     const [formattedValue, setFormattedValue] = useState(""); // Formatted output
 
     useEffect(()=>{
@@ -18,20 +18,24 @@ function InvoicePage() {
           var response = await axios.get(`api/v1/Invoice/GetInvoiceById/${invoiceId}`);
 
           if(response.status === 200){              
-              setInvoice(response.data);             
+              setInvoice(response.data);              
+              const generate = async () => {
+                await generatePDF(response.data);
+            };
+            generate();   
           }
-      } 
-      fetchInvoice();
-      generatePDF(invoice);
+      };
+      fetchInvoice();      
+
   }, [invoiceId]);
     
 
-    const generatePDF = useCallback( async (invoice) => {
+    const generatePDF = useCallback( async(invoic) => {
         const doc = new jsPDF();
       
         // Add image
-        if (invoice.imageURl) {
-          const response = await fetch(invoice.imageURl);
+        if (invoic.imageURl) {
+          const response = await fetch(invoic.imageURl);
           const blob = await response.blob();
       
           const base64data = await new Promise((resolve, reject) => {
@@ -50,12 +54,12 @@ function InvoicePage() {
       
         // Add invoice details
         doc.setFontSize(12);
-        doc.text(`Invoice Number: #INV${invoice.invoiceNumber}`, 20, 40);
-        doc.text(`Contact Name: ${invoice.client}`, 20, 50);
-        doc.text(`Created Date: ${invoice.createdDate}`, 20, 60);
+        doc.text(`Invoice Number: #INV${invoic.invoiceNumber}`, 20, 40);
+        doc.text(`Contact Name: ${invoic.client}`, 20, 50);
+        doc.text(`Created Date: ${invoic.createdDate}`, 20, 60);
       
         // Add table for items
-        const tableData = invoice.items.map((item) => [
+        const tableData = invoic.items.map((item) => [
           item.description,
           item.quantity,
           `${item.unitPrice.toFixed(2)}`,
@@ -69,13 +73,13 @@ function InvoicePage() {
         });
       
         // Add total and tax
-        if (!isNaN(invoice.totalPrice)) {
+        if (!isNaN(invoic.totalPrice)) {
             // Format as currency
             const formatted = new Intl.NumberFormat("en-NG", {
               style: "currency",
               currency: "NGN",
               minimumFractionDigits: 2,
-            }).format(invoice.totalPrice);
+            }).format(invoic.totalPrice);
     
             setFormattedValue(formatted);
           } else {
@@ -88,7 +92,7 @@ function InvoicePage() {
       
         // Add footer
         doc.setFontSize(10);
-        doc.text(invoice.footNote || "Thank you for your business!", 20, finalY + 30);
+        doc.text(invoic.footNote || "Thank you for your business!", 20, finalY + 30);
       
         //add logo
         //const logoPath = "C:/Users/USER/zucoinvoice/zucoinvoice/src/assets/zucoinvoiceapplogo.png"; // Adjust the path as needed
@@ -109,9 +113,9 @@ function InvoicePage() {
         const pdfBlob = new Blob([pdfData], { type: "application/pdf" });
 
         return pdfBlob;
-      }, [formattedValue, invoice]);
+      }, [formattedValue]);
 
-       
+   
       
       // View PDF in a new tab
       const viewPDF = async () => {
