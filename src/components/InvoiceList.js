@@ -15,7 +15,7 @@ function InvoiceList() {
      const SEARCH_URL = "api/v1/Invoice/search/";
 
      const search = async () => {
-        if(query == ""){
+        if(query === ""){
             setShow(false);
             return;
         }

@@ -18,7 +18,7 @@ function InvoicePage() {
             var response = await axios.get(`api/v1/Invoice/GetInvoiceById/${invoiceId}`);
 
             if(response.status === 200){
-                console.log(response.data);
+                
                 setInvoice(response.data);
                 generatePDF(response.data);
             }

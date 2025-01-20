@@ -3,7 +3,6 @@ import axios from '../api/axios'
 import { useState, useRef } from 'react'
 import DashBoardLayout from './DashBoardLayout'
 import './createinvoice.css'
-import Image from '../assets/dropdown-arrow-svgrepo-com 1.png'
 import Image2 from '../assets/Frame.png'
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from "uuid";
@@ -87,7 +86,7 @@ function CreateInvoice() {
         
         var taxx = 0;
         var total = 0;
-        if(tax != '' && !isNaN(tax)){
+        if(tax !== '' && !isNaN(tax)){
             taxx += (parseFloat(tax)/100) * parseFloat(subTota);
             total += (parseFloat(subTota) + taxx);
         }
@@ -133,9 +132,8 @@ function CreateInvoice() {
             catch(error){
                 console.log("error:", error);
             }
-        }; 
+        };    
     
-    const ITEMS_URL = "api/v1/Item/Add";
     const addItem = async (e)=>{
         e.preventDefault();
               
@@ -258,7 +256,7 @@ function CreateInvoice() {
     <input value={invoiceno} type='text' id='invoicenumber' readOnly></input>
     <div className='contactHeader'>
         <p>TO:</p>
-        <a onClick={handleShow} style={{ cursor: 'pointer'}}>Add Contact</a>
+        <button onClick={handleShow} style={{ cursor: 'pointer'}}>Add Contact</button>
     </div>
     <select value={contact} onChange={(e)=>setContact(e.target.value)} type='text' id='contact'>
         <option>select contact</option>

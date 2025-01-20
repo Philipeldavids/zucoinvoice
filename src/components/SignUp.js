@@ -44,9 +44,9 @@ function SignUp() {
     fetchData();
   }, []); // Empty dependency array ensures this runs only once
 
-  const handleChange = (selectedOption) => {
-    setSelectedOption(selectedOption);
-  };
+  // const handleChange = (selectedOption) => {
+  //   setSelectedOption(selectedOption);
+  // };
    
    
     

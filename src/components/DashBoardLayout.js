@@ -18,7 +18,7 @@ function DashBoardLayout() {
   const [text, setText] = useState("");
   const [user, setUser] = useState();
   const [showBusiness, setShowBusiness] = useState(false);
-  const [company, setCompany] = useState();
+ 
   
     useEffect(() => {
       const loggedInUser = sessionStorage.getItem("user");
@@ -76,8 +76,8 @@ function DashBoardLayout() {
         <br/><br/>
 
           {showBusiness ?
-           <a variant="primary" onClick={handleShow}className='myBusiness'>+ {user?.company}</a> :
-           <a variant="primary" onClick={handleShow}className='myBusiness'>+ My Business</a>}
+           <button variant="primary" onClick={handleShow}className='myBusiness'>+ {user?.company}</button> :
+           <button variant="primary" onClick={handleShow}className='myBusiness'>+ My Business</button>}
           
        
 
