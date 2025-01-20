@@ -76,8 +76,8 @@ function DashBoardLayout() {
         <br/><br/>
 
           {showBusiness ?
-           <button variant="primary" onClick={handleShow}className='myBusiness'>+ {user?.company}</button> :
-           <button variant="primary" onClick={handleShow}className='myBusiness'>+ My Business</button>}
+           <button style={{ background:'none', border:'none' }} onClick={handleShow} className='myBusiness'>+ {user?.company}</button> :
+           <button  style={{ background:'none', border:'none' }} onClick={handleShow}className='myBusiness'>+ My Business</button>}
           
        
 

@@ -12,12 +12,15 @@ img{
 
 .myBusiness{
     font-size: 18px;
+    width: 200px;
+    justify-content: stretch;
     text-decoration: none;
     font-weight: bold;
     font-family: Poppins;
-    margin-left: 20px;
-    margin-top: 70px;
+    margin-left: 10px;
+    margin-top: 40px;
     cursor: pointer;
+    color: black;
 }
 
 .menu{
