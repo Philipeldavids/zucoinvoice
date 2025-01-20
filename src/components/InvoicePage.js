@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback} from 'react';
 import axios from '../api/axios';
 import { useInvoice } from "../context/InvoiceContext";
 import jsPDF from "jspdf";
@@ -24,9 +24,9 @@ function InvoicePage() {
             }
         } 
         fetchInvoice();
-    }, [invoiceId, generatePDF]);
+    }, [invoiceId]);
 
-    const generatePDF = async (invoice) => {
+    const generatePDF = useCallback( async (invoice) => {
         const doc = new jsPDF();
       
         // Add image
@@ -101,7 +101,7 @@ function InvoicePage() {
             reader.onloadend = () => resolve(reader.result);
             reader.onerror = reject;
             reader.readAsDataURL(blob2);
-        });
+        }, []);
         doc.addImage(base64data2, "PNG", 80, 200, 50, 50);
 
         // Return the PDF as a blob
@@ -109,7 +109,7 @@ function InvoicePage() {
         const pdfBlob = new Blob([pdfData], { type: "application/pdf" });
 
         return pdfBlob;
-      };
+      });
       
       // View PDF in a new tab
       const viewPDF = async () => {

@@ -256,7 +256,7 @@ function CreateInvoice() {
     <input value={invoiceno} type='text' id='invoicenumber' readOnly></input>
     <div className='contactHeader'>
         <p>TO:</p>
-        <a href='#' onClick={handleShow} style={{ cursor: 'pointer'}}>Add Contact</a>
+        <a href="#" onClick={handleShow} style={{ cursor: 'pointer'}}>Add Contact</a>
     </div>
     <select value={contact} onChange={(e)=>setContact(e.target.value)} type='text' id='contact'>
         <option>select contact</option>
@@ -269,7 +269,7 @@ function CreateInvoice() {
 
     
     <div className='logo'>
-    <a href='#' onClick={handleIconClick} style={{ zIndex: 1, position: 'relative', cursor: 'pointer' }} >LOGO</a>
+    <a href="#" onClick={handleIconClick} style={{ zIndex: 1, position: 'relative', cursor: 'pointer' }} >LOGO</a>
     {preview && <img src ={preview} style={{ position: 'absolute', opacity: 0.7, marginLeft: -105, marginTop: -78, width: 180, height:180 }}alt='dropdown' id='dropdown'/>}
     <input
         type="file"
