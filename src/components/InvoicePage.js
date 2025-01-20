@@ -17,12 +17,12 @@ function InvoicePage() {
       const fetchInvoice = async () =>{
           var response = await axios.get(`api/v1/Invoice/GetInvoiceById/${invoiceId}`);
 
-          if(response.status === 200){
-            generatePDF(response.data);
+          if(response.status === 200){              
               setInvoice(response.data);             
           }
       } 
       fetchInvoice();
+      generatePDF(invoice);
   }, [invoiceId]);
     
 
@@ -109,7 +109,8 @@ function InvoicePage() {
         const pdfBlob = new Blob([pdfData], { type: "application/pdf" });
 
         return pdfBlob;
-      }, [logo, invoice]);
+      }, [formattedValue, invoice]);
+
        
       
       // View PDF in a new tab
