@@ -14,17 +14,17 @@ function InvoicePage() {
     const [formattedValue, setFormattedValue] = useState(""); // Formatted output
 
     useEffect(()=>{
-        const fetchInvoice = async () =>{
-            var response = await axios.get(`api/v1/Invoice/GetInvoiceById/${invoiceId}`);
+      const fetchInvoice = async () =>{
+          var response = await axios.get(`api/v1/Invoice/GetInvoiceById/${invoiceId}`);
 
-            if(response.status === 200){
-                
-                setInvoice(response.data);
-                generatePDF(response.data);
-            }
-        } 
-        fetchInvoice();
-    }, [invoiceId]);
+          if(response.status === 200){
+            generatePDF(response.data);
+              setInvoice(response.data);             
+          }
+      } 
+      fetchInvoice();
+  }, [invoiceId]);
+    
 
     const generatePDF = useCallback( async (invoice) => {
         const doc = new jsPDF();
@@ -101,7 +101,7 @@ function InvoicePage() {
             reader.onloadend = () => resolve(reader.result);
             reader.onerror = reject;
             reader.readAsDataURL(blob2);
-        }, []);
+        });
         doc.addImage(base64data2, "PNG", 80, 200, 50, 50);
 
         // Return the PDF as a blob
@@ -109,7 +109,8 @@ function InvoicePage() {
         const pdfBlob = new Blob([pdfData], { type: "application/pdf" });
 
         return pdfBlob;
-      });
+      }, [logo, invoice]);
+       
       
       // View PDF in a new tab
       const viewPDF = async () => {
