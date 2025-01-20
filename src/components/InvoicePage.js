@@ -24,7 +24,7 @@ function InvoicePage() {
             }
         } 
         fetchInvoice();
-    }, [invoiceId]);
+    }, [invoiceId, generatePDF]);
 
     const generatePDF = async (invoice) => {
         const doc = new jsPDF();
