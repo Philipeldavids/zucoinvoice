@@ -3,6 +3,7 @@ import axios from '../api/axios'
 import { useState, useRef } from 'react'
 import DashBoardLayout from './DashBoardLayout'
 import './createinvoice.css'
+import Image from '../assets/upload.png'
 import Image2 from '../assets/Frame.png'
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from "uuid";
@@ -256,7 +257,7 @@ function CreateInvoice() {
     <input value={invoiceno} type='text' id='invoicenumber' readOnly></input>
     <div className='contactHeader'>
         <p>TO:</p>
-        <a href="#" onClick={handleShow} style={{ cursor: 'pointer'}}>Add Contact</a>
+        <p onClick={handleShow} className="buttonEdit" style={{ cursor: 'pointer'}}>Add Contact</p>
     </div>
     <select value={contact} onChange={(e)=>setContact(e.target.value)} type='text' id='contact'>
         <option>select contact</option>
@@ -269,8 +270,8 @@ function CreateInvoice() {
 
     
     <div className='logo'>
-    <a href="#" onClick={handleIconClick} style={{ zIndex: 1, position: 'relative', cursor: 'pointer' }} >LOGO</a>
-    {preview && <img src ={preview} style={{ position: 'absolute', opacity: 0.7, marginLeft: -105, marginTop: -78, width: 180, height:180 }}alt='dropdown' id='dropdown'/>}
+    <img src={Image} onClick={handleIconClick} style={{ zIndex: 1, position: 'relative', width: '40px', marginTop:'-15px', cursor: 'pointer' }} />
+    {preview && <img src ={preview} style={{ position: 'absolute', opacity: 0.7, marginLeft: -120, marginTop: -78, width: 200, height:180 }}alt='dropdown' id='dropdown'/>}
     <input
         type="file"
         ref={fileInputRef}

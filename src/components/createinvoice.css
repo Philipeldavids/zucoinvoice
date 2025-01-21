@@ -29,7 +29,7 @@ width: 100px;
 .logo{
     position:absolute;    
     background-color: #D5EEFC;
-    width: 180px;
+    width: 200px;
     height: 180px;
     align-content: center;    
     margin-left: 600px;
@@ -96,6 +96,11 @@ width: 100px;
     width: 100px;
     margin-top: 10px;
     margin-left: 20px;
+}
+.buttonEdit{
+    background: none;
+    color: #1FABFA;   
+ 
 }
 #tax{
     border: 1px solid black;
