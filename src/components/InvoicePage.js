@@ -107,7 +107,7 @@ function InvoicePage() {
         const pdfBlob = new Blob([pdfData], { type: "application/pdf" });
 
         return pdfBlob;
-      }, [formattedValue]);
+      }, [formattedValue, invoiceId]);
 
       useEffect(()=>{
         generatePDF();
