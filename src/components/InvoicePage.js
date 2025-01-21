@@ -13,24 +13,18 @@ function InvoicePage() {
     const[invoice, setInvoice] = useState([]);
     const [formattedValue, setFormattedValue] = useState(""); // Formatted output
 
-    useEffect(()=>{
-      const fetchInvoice = async () =>{
-          var response = await axios.get(`api/v1/Invoice/GetInvoiceById/${invoiceId}`);
-
-          if(response.status === 200){              
-              setInvoice(response.data);              
-              const generate = async () => {
-                await generatePDF(response.data);
-            };
-            generate();   
-          }
-      };
-      fetchInvoice();      
-
-  }, [invoiceId]);
+    
     
 
-    const generatePDF = useCallback( async(invoic) => {
+    const generatePDF = useCallback( async() => {
+
+      let invoic = [];
+      var respons = await axios.get(`api/v1/Invoice/GetInvoiceById/${invoiceId}`);
+  
+            if(respons.status === 200){              
+                setInvoice(respons.data);     
+                invoic = respons.data;
+            }
         const doc = new jsPDF();
       
         // Add image
@@ -87,7 +81,7 @@ function InvoicePage() {
           }
         
         const finalY = doc.lastAutoTable.finalY + 10;
-        doc.text(`Tax: %${invoice.tax}`, 20, finalY);
+        doc.text(`Tax: %${invoic.tax}`, 20, finalY);
         doc.text(`Total: ${formattedValue}`, 20, finalY + 10);
       
         // Add footer
@@ -115,17 +109,20 @@ function InvoicePage() {
         return pdfBlob;
       }, [formattedValue]);
 
-   
+      useEffect(()=>{
+        generatePDF();
+  
+    }, [generatePDF]);
       
       // View PDF in a new tab
       const viewPDF = async () => {
-        const pdfBlob = await generatePDF(invoice);
+        const pdfBlob = await generatePDF();
         const pdfURL = URL.createObjectURL(pdfBlob);
         window.open(pdfURL, "_blank");
       };
   // Download PDF
   const downloadPDF = async () => {
-    const pdfBlob = await generatePDF(invoice);
+    const pdfBlob = await generatePDF();
     const pdfURL = URL.createObjectURL(pdfBlob);
     const link = document.createElement("a");
     link.href = pdfURL;
