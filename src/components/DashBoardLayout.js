@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import Image from '../assets/zucoinvoiceapplogo.png'
 import Image2 from '../assets/business 1.png'
 import Image3 from '../assets/invoice 1.png'
@@ -13,27 +13,30 @@ import { Modal, Button } from 'react-bootstrap';
 
 function DashBoardLayout() {
 
-  const [show, setShow] = useState(false);   
+  const [show, setShow] = useState(false);
+  const [show2, setShow2] = useState(false);   
   const [isOpen, setIsOpen] = useState(false);
   const [text, setText] = useState("");
   const [user, setUser] = useState();
   const [showBusiness, setShowBusiness] = useState(false);
  
-  
-    useEffect(() => {
-      const loggedInUser = sessionStorage.getItem("user");
-      if (loggedInUser) {
-        const foundUser = JSON.parse(loggedInUser);       
-        setUser(foundUser);
-        setShowBusiness(true);     
-      }
-    }, []);
-
+  useEffect(() => {
+    const loggedInUser = sessionStorage.getItem("user");
+    if (loggedInUser) {
+      const foundUser = JSON.parse(loggedInUser);       
+      setUser(foundUser);           
+    }
+  }, []);
+   
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const handleClose2 = () => setShow2(false);
+  const handleShow2 = () => setShow2(true);
+
+
   const ADDBUSINESS_URL = "api/v1/Account/AddCompany"
-  const handleSubmit= async ()=>{  
+  const handleSubmit= useCallback(async ()=>{  
       
       try{
         const response = await axios.put(ADDBUSINESS_URL, {
@@ -49,7 +52,7 @@ function DashBoardLayout() {
       });
         if(response.status === 200){        
         
-        setUser(response.data);        
+        sessionStorage.setItem("user", response.data);       
         alert('Registration successful');
         handleClose();
                 
@@ -59,10 +62,14 @@ function DashBoardLayout() {
         }
       }
       catch(error){
-        console.error('error:', error);
+        console.log('error:', error);
       }
-    }
+    }, [user, text]);
 
+    useEffect(() => {
+      setShowBusiness(true);
+    }, []);
+    
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   }
@@ -75,9 +82,10 @@ function DashBoardLayout() {
         <img src={Image} alt='My Logo' />
         <br/><br/>
 
-          {showBusiness ?
+
+          {showBusiness?
            <button style={{ background:'none', border:'none' }} onClick={handleShow} className='myBusiness'>+ {user?.company}</button> :
-           <button  style={{ background:'none', border:'none' }} onClick={handleShow}className='myBusiness'>+ My Business</button>}
+           <button  style={{ background:'none', border:'none' }} onClick={handleShow}className='myBusiness'>+ Add Business</button>}
           
        
 
@@ -104,7 +112,7 @@ function DashBoardLayout() {
             <span className='dashboard-text'><NavLink className='navlink' to='/usersettings'>Settings</NavLink></span>
             </div>
             <div style={{ marginTop: 80, marginLeft: 50 }}>
-            <button>Subscription</button>
+            <button onClick={handleShow2}>Subscription</button>
             </div>
             
             
@@ -127,7 +135,28 @@ function DashBoardLayout() {
                 </Modal.Footer>
                 </form>
             </Modal>
-            
+
+            <Modal show={show2} onHide={handleClose2}>
+                    <Modal.Header closeButton>
+                    <Modal.Title>Subscription</Modal.Title>
+                </Modal.Header>
+                <form>
+                <Modal.Body>
+                <Modal.Title>Standard</Modal.Title>
+                  <input type="radio" name='sub' onChange={(e)=> setText(e.target.value)} value={text}></input>
+                  <Modal.Title>Premium</Modal.Title>
+                  <input type="radio" name='sub' onChange={(e)=> setText(e.target.value)} value={text}></input>
+                  </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose2}>
+                        Close
+                    </Button>
+                    <Button variant="primary" onClick={handleSubmit}>
+                        Save Changes
+                    </Button>
+                </Modal.Footer>
+                </form>
+            </Modal>
     </div>
         
     </div>

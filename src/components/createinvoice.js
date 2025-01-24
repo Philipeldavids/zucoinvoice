@@ -252,7 +252,7 @@ function CreateInvoice() {
     <DashBoardLayout/>
     <form method="post" enctype="multipart/form-data">
     <div className='createinvoice-container'>
-    <h4>Invoice</h4><br/>
+    <h4>Create Invoice</h4><br/>
     <p>Invoice Number</p>
     <input value={invoiceno} type='text' id='invoicenumber' readOnly></input>
     <div className='contactHeader'>
