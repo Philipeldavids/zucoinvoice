@@ -21,7 +21,7 @@ function Header() {
   const handleLogout = () => {
     setUser({});
     sessionStorage.clear();
-    navigate('/login');
+    navigate('/');
   };
   return (
     <div className='header'>      

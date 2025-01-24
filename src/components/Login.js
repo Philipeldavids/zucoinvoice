@@ -128,7 +128,7 @@ function Login() {
           <div className='login-signup'>
           {loading && <div className='spinner'></div>}  
           <button type='submit' className='button'onClick={(event)=>handleLogin(event)} disabled={loading}>Sign In</button>
-          <NavLink to='/'>Sign Up</NavLink>
+          <NavLink to='/signup'>Sign Up</NavLink>
           
           </div>
         </form>

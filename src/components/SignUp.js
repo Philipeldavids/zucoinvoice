@@ -112,7 +112,7 @@ function SignUp() {
         <div>
             <br/>
         <h2 className='start'>Get Started</h2>
-        <p className='start2'>Already have an account.  <NavLink to='/login'>Sign In</NavLink></p>      
+        <p className='start2'>Already have an account.  <NavLink to='/'>Sign In</NavLink></p>      
         </div>
         
         <form className='signup-form'>
