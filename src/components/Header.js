@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import './Header.css';
+import styles from './Header.module.css';
 import Image from '../assets/Clip path group.png'
 import { useNavigate } from 'react-router-dom';
 import MenuItem from '@mui/material/MenuItem';
@@ -24,9 +24,9 @@ function Header() {
     navigate('/');
   };
   return (
-    <div className='header'>      
-    <img id='image1' src={Image} alt='notification'/>
-    <nav className='user'>
+    <div className={styles.headerapp}>      
+    <img id={styles.image1} src={Image} alt='notification'/>
+    <nav className={styles.user}>
     <Select>
     {/* <img id='image2' src ={Image2} alt ='user'/>  */}
           <MenuItem value="logout" onClick= {handleLogout}>LOGOUT</MenuItem>

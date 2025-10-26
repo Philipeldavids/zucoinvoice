@@ -1,4 +1,4 @@
-.header{
+.headerapp{
     display: flex;
     flex-direction: row;
     margin-left: 900px;
@@ -15,7 +15,7 @@
     justify-content: space-between;
     cursor: pointer;
 }
-.header p{
+.headerapp p{
     padding-top: 8px;
     font-size:medium;
     font-family: Poppins;

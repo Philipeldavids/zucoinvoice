@@ -3,7 +3,7 @@ import axios from '../api/axios';
 import { useInvoice } from "../context/InvoiceContext";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
-import './InvoicePage.css';
+import styles from './InvoicePage.module.css';
 import DashBoardLayout from './DashBoardLayout';
 import logo from '../assets/zucoinvoiceapplogo.png';
 
@@ -11,103 +11,116 @@ function InvoicePage() {
 
     const { invoiceId } = useInvoice();
     const[invoice, setInvoice] = useState([]);
-    const [formattedValue, setFormattedValue] = useState(""); // Formatted output
+    
 
     
     
+const generatePDF = useCallback(async () => {
+  let invoic = [];
+  let subscriptionStatus = false; // default false
 
-    const generatePDF = useCallback( async() => {
+  // Fetch invoice
+  const respons = await axios.get(`api/v1/Invoice/GetInvoiceById/${invoiceId}`);
+  if (respons.status === 200) {
+    setInvoice(respons.data);
+    invoic = respons.data;
+  }
 
-      let invoic = [];
-      var respons = await axios.get(`api/v1/Invoice/GetInvoiceById/${invoiceId}`);
-  
-            if(respons.status === 200){              
-                setInvoice(respons.data);     
-                invoic = respons.data;
-            }
-        const doc = new jsPDF();
-      
-        // Add image
-        if (invoic.imageURl) {
-          const response = await fetch(invoic.imageURl);
-          const blob = await response.blob();
-      
-          const base64data = await new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onloadend = () => resolve(reader.result);
-            reader.onerror = reject;
-            reader.readAsDataURL(blob);
-          });
-      
-          doc.addImage(base64data, "PNG", 150, 10, 50, 50); // (data, format, x, y, width, height)
-        }
-      
-        // Add title
-        doc.setFontSize(18);
-        doc.text("Invoice", 105, 20, { align: "center" });
-      
-        // Add invoice details
-        doc.setFontSize(12);
-        doc.text(`Invoice Number: #INV${invoic.invoiceNumber}`, 20, 40);
-        doc.text(`Contact Name: ${invoic.client}`, 20, 50);
-        doc.text(`Created Date: ${invoic.createdDate}`, 20, 60);
-      
-        // Add table for items
-        const tableData = invoic.items.map((item) => [
-          item.description,
-          item.quantity,
-          `${item.unitPrice.toFixed(2)}`,
-          `${(item.quantity * item.unitPrice).toFixed(2)}`,
-        ]);
-      
-        doc.autoTable({
-          startY: 70,
-          head: [["Description", "Quantity", "Price", "Total"]],
-          body: tableData,
-        });
-      
-        // Add total and tax
-        if (!isNaN(invoic.totalPrice)) {
-            // Format as currency
-            const formatted = new Intl.NumberFormat("en-NG", {
-              style: "currency",
-              currency: "NGN",
-              minimumFractionDigits: 2,
-            }).format(invoic.totalPrice);
+  // Fetch subscription status (to know if user is subscribed)
+  try {
+    const user = JSON.parse(sessionStorage.getItem("user"));
+    if (user?.id) {
+      const subRes = await axios.get(`api/v1/subscription/current/${user.id}`);
+      subscriptionStatus = subRes.data?.IsActive || false;
+    }
+  } catch (err) {
+    console.warn("Could not fetch subscription status, assuming free tier.");
+  }
+
+  const doc = new jsPDF();
+
+  // Add image
+  if (invoic.imageURl) {
+    const response = await fetch(invoic.imageURl);
+    const blob = await response.blob();
+    const base64data = await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+    doc.addImage(base64data, "PNG", 150, 10, 50, 50);
+  }
+
+  // Title
+  doc.setFontSize(18);
+  doc.text("Invoice", 105, 20, { align: "center" });
+
+  // Invoice details
+  doc.setFontSize(12);
+  doc.text(`Invoice Number: #INV${invoic.invoiceNumber}`, 20, 40);
+  doc.text(`Contact Name: ${invoic.client}`, 20, 50);
+  doc.text(`Created Date: ${invoic.createdDate}`, 20, 60);
+
+  // Table
+  const tableData = invoic.items.map((item) => [
+    item.description,
+    item.quantity,
+    `${item.unitPrice.toFixed(2)}`,
+    `${(item.quantity * item.unitPrice).toFixed(2)}`,
+  ]);
+
+  doc.autoTable({
+    startY: 70,
+    head: [["Description", "Quantity", "Price", "Total"]],
+    body: tableData,
+  });
+
+  // Total and tax
+  let formatted = "";
+  if (!isNaN(invoic.totalPrice)) {
+    formatted = new Intl.NumberFormat("en-NG", {
+      style: "currency",
+      currency: "NGN",
+      minimumFractionDigits: 2,
+    }).format(invoic.totalPrice);
     
-            setFormattedValue(formatted);
-          } else {
-            setFormattedValue("");
-          }
-        
-        const finalY = doc.lastAutoTable.finalY + 10;
-        doc.text(`Tax: %${invoic.tax}`, 20, finalY);
-        doc.text(`Total: ${formattedValue}`, 20, finalY + 10);
-      
-        // Add footer
-        doc.setFontSize(10);
-        doc.text(invoic.footNote || "Thank you for your business!", 20, finalY + 30);
-      
-        //add logo
-        //const logoPath = "C:/Users/USER/zucoinvoice/zucoinvoice/src/assets/zucoinvoiceapplogo.png"; // Adjust the path as needed
-        
-  // Fetch the image
-        const response = await fetch(logo);
-        const blob2 = await response.blob();
-        const base64data2 = await new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onloadend = () => resolve(reader.result);
-            reader.onerror = reject;
-            reader.readAsDataURL(blob2);
-        });
-        doc.addImage(base64data2, "PNG", 80, 200, 50, 50);
+  } else {
+    formatted = "";
+  }
 
-        // Return the PDF as a blob
-        const pdfData = doc.output("arraybuffer"); // Get PDF data as an ArrayBuffer
-        const pdfBlob = new Blob([pdfData], { type: "application/pdf" });
+  const finalY = doc.lastAutoTable.finalY + 10;
+  doc.text(`Tax: %${invoic.tax}`, 20, finalY);
+  doc.text(`Total: ${formatted}`, 20, finalY + 10);
 
-        return pdfBlob;
-      }, [formattedValue, invoiceId]);
+  // Footer
+  doc.setFontSize(10);
+  doc.text(invoic.footNote || "Thank you for your business!", 20, finalY + 30);
+
+  // ✅ Only add watermark/logo if user is on FREE tier
+  if (!subscriptionStatus) {
+    const response = await fetch(logo);
+    const blob2 = await response.blob();
+    const base64data2 = await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob2);
+    });
+
+    // Watermark / logo at bottom
+    doc.addImage(base64data2, "PNG", 80, 200, 50, 50);
+    doc.setTextColor(150);
+    doc.setFontSize(9);
+    doc.text("Generated with ZucoInvoice Free Tier", 70, 260);
+  }
+
+  // Return PDF blob
+  const pdfData = doc.output("arraybuffer");
+  const pdfBlob = new Blob([pdfData], { type: "application/pdf" });
+
+  return pdfBlob;
+}, [invoiceId]);
 
       useEffect(()=>{
         generatePDF();
@@ -137,7 +150,7 @@ function InvoicePage() {
   return (
     <div>
         <DashBoardLayout/>
-    <div className="invoice-container">
+    <div className={styles.invoice_container}>
       <h1>Invoice</h1>
       <div style={{ display: "flex", width: "400px", justifyContent: "space-between", marginTop: "30px" }}>
       <button onClick={viewPDF}>View Invoice</button>

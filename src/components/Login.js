@@ -1,7 +1,10 @@
 import React, {useState} from 'react';
-import './Login.css'
-import axios from "../api/axios"
+import styles from './Login.module.css';
+import axios from "../api/axios";
 import { NavLink, useNavigate} from 'react-router-dom';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Logo from '../assets/zucoinvoiceapplogo.png';
 
 
 function Login() {
@@ -74,25 +77,35 @@ function Login() {
       if(response.status === 200){
         
        sessionStorage.setItem('user', JSON.stringify(response.data))
+       
         navigate("/dashboard");
       }
       else{
-        alert('Authentication failed');      
+        alert("Incorrect Credentials");
+          };    
       }
-    }
+    
     catch(error){
       console.error('Login error:', error);
+      toast.error("Error Notification! Kindly check your login credentials", { position: 'top-right'});
     }
     finally{
       setLoading(false);
+
     }
   }
   return (
-    <div className="login-page">
-      <div className= "login-container">
+    <>
+  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', marginTop: '30px' }}>
+  <NavLink to="/"><img src={Logo} alt="logo" /></NavLink>
+  </div>
+
+     
+<div className={ styles.login_page }>      
+      <div className={ styles.login_container }>
         <br/>
-        <h2 className='welcome'>Welcome Back! SignIn</h2>
-        <form className='login-form'>
+        <h2 className={styles.welcome}>Welcome Back! SignIn</h2>
+        <form className={styles.login_form}>
           <div>
           <label>Email Address</label><br/>
           <input 
@@ -106,34 +119,47 @@ function Login() {
         </div>        
         <div>
           <label>Password</label><br/>
-          <input type={visible? 'text':'password'} 
+          <div style={{display: "flex", flexDirection:"row"}}> 
+         <input type={visible? 'text':'password'} 
           placeholder='Password'           
           name="password"
           value={formValues.password}
           onChange={handleChange}
         />
-           <i className={`material-icons ${visible ? 'visible' : 'hidden'}`}  
+        <i className={`material-icons ${styles.icon}`}  
+   onClick={togglePasswordVisibility}>
+  { visible ? 'visibility' : 'visibility_off' }
+</i>
+  </div>           {/* <i className={`${styles.material_icons} ${visible ? styles.visible : styles.hidden}`}  
           onClick={togglePasswordVisibility}          
           >
-            {visible ? 'visibility' : 'visibility_off'}</i>
+            { visible ? 'visibility' : 'visibility_off' }</i> */}
             {errors.password && <p style={{ color: "red" }}>{errors.password}</p>}
             </div>
-          <div className='remember-me'>
-              
-              <input type='checkbox' className='checkbox'/>
-              <p className='underlay1'>Remember me</p>            
-              <p className='underlay2'>Forgot password</p>
-          </div><br/>
+          <div className={styles.remember_me}>
+              <div style={{display: "flex", flexDirection: "row", width: 110, justifyContent: "space-between"}}>
+                  <input type='checkbox' className={styles.checkbox}/>
+              <p className={styles.underlay1}>Remember me</p>  
 
-          <div className='login-signup'>
-          {loading && <div className='spinner'></div>}  
-          <button type='submit' className='button'onClick={(event)=>handleLogin(event)} disabled={loading}>Sign In</button>
+              </div>
+                    
+ 
+              <NavLink to="/forgotpassword" className={styles.underlay2}>Forgot password</NavLink>
+          </div><br/>
+          {loading && <div className={styles.spinner}></div>}
+          <div className={ styles.login_signup } >
+          
+          <button type='submit' className={styles.button} onClick={(event)=>handleLogin(event)} disabled={loading}>Sign In</button>
+          
           <NavLink to='/signup'>Sign Up</NavLink>
           
           </div>
         </form>
         </div>
     </div>
+    <ToastContainer />
+    </>
+    
   )
 }
 

@@ -1,0 +1,227 @@
+.createinvoice_container {
+  position: relative;
+  margin-left: 350px;
+  margin-top: -800px;
+  box-sizing: border-box;
+  /* margin: 2rem auto; */
+  padding: 1rem;
+  font-family: "Poppins", sans-serif;
+  max-width: 95%;  
+
+}
+
+/* Invoice number input */
+#invoicenumber {
+  background-color: #f5f5f5;
+  width: 100%;
+  max-width: 200px;
+  border: none;
+  padding: 0.4rem;
+}
+
+/* Contact section */
+.contactHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 300px;
+  margin-top: 0.8rem;
+}
+
+#contact {
+  width: 100%;
+  max-width: 300px;
+  height: 32px;
+  background-color: #f5f5f5;
+  border: none;
+  padding: 0.4rem;
+}
+
+/* Logo upload area */
+.logo {
+  position: relative;
+  background-color: #d5eefc;
+  width: 200px;
+  height: 180px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 600px;
+  margin-top: -200px;
+  margin-bottom: 100px; 
+  /* margin: 2rem auto; */
+  overflow: hidden;
+}
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  font-size: 18px;
+}
+.overlay p {
+  margin-top: 15px;
+}
+
+.logo img {
+  width: 60%;
+  cursor: pointer;
+}
+
+.invoiceheading,
+.input_loading {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+  align-items: center;
+}
+
+.invoiceheading li {
+  font-weight: 600;
+}
+
+.input_loading input {
+  width: 100%;
+  background-color: #f5f5f5;
+  border: none;
+  padding: 0.4rem;
+  border-radius: 4px;
+}
+
+.addnewbtn {
+  background-color: #1fabfa;
+  border: none;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#delete {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+/* Totals section */
+#totaldetail {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+#totaldetail input {
+  background-color: #f5f5f5;
+  border: none;
+  padding: 0.4rem;
+  width: 120px;
+}
+
+#taxdetail {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+#total {
+  background-color: #001aff;
+  color: white;
+  padding: 0.3rem 0.6rem;
+  border-radius: 5px;
+}
+
+/* Footnote */
+#footnote {
+  width: 100%;
+  max-width: 800px;
+  height: 100px;
+  margin-top: 1.5rem;
+  background-color: #f5f5f5;
+  border: none;
+  padding: 0.6rem;
+  border-radius: 4px;
+  resize: vertical;
+}
+
+/* Buttons */
+#actionbtn {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+  margin-top: 2rem;
+  width: 100%;
+  max-width: 800px;
+}
+
+#actionbtn button {
+  flex: 1;
+  min-width: 120px;
+  background-color: #1fabfa;
+  border: none;
+  color: white;
+  padding: 0.7rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+#actionbtn button:hover {
+  background-color: #1099e1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .invoiceheading,
+  .input_loading {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .logo {
+    width: 150px;
+    height: 130px;
+  }
+
+  #totaldetail {
+    align-items: flex-start;
+  }
+
+  #footnote {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .invoiceheading,
+  .input_loading {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  #actionbtn {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  #contact,
+  #invoicenumber {
+    max-width: 100%;
+  }
+
+  #totaldetail input {
+    width: 100px;
+  }
+}

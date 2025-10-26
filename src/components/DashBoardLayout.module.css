@@ -1,4 +1,4 @@
-.dashboard-container{
+.dashboard_container{
     background-color: #D5EEFC;
     width: 300px;
     height: 900px;
@@ -23,6 +23,12 @@ img{
     color: black;
 }
 
+.menuItem{
+  display:flex;
+  align-items: center;
+  flex-direction: row;
+}
+
 .menu{
  margin-top: 40px;
  display: flex;
@@ -30,27 +36,36 @@ img{
  height: 150px;
  justify-content: space-between;
 }
-.dashboard{
-    width: 23px;
-    height: 23px;
+.icon{
+    width: 20px;
+    height: 20px;
 }
-.dashboard-text{
+.dashboard_text{
     margin-left: 10px;
     margin-top: 12px;
     font-size: 20px;
     cursor: pointer;
+    text-decoration: none;
+    color: black;
 }
-.dropdown-content{
+/* .dashboard_text2{
+  margin-left: 10px;
+  margin-top: 12px;
+  font-size: 20px;
+  cursor: pointer;
+  list-style: none;
+} */
+.dropdown_content{
     cursor: pointer;
 }
-.dropdown-content.show {
+.dropdown_content.show {
     display: block;
   }
-  .dropdown-content.hide {
+  .dropdown_content.hide {
     display: none;
   }
 
-  button{
+  #sub{
     width: 150px;
     height: 40px;
     padding: 10px 5px 10px 5px;
@@ -63,6 +78,11 @@ img{
   
   .navlink{
     text-decoration: none;
+    color: black;
+    margin-left: 25px;
+    margin-top: 12px;
+    font-size: 20px;
+    cursor: pointer;    
     color: black;
   }
   .navlink:hover{

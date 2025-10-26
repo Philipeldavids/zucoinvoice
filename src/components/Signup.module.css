@@ -1,19 +1,23 @@
-.signup-container{
+.signup_container{
+    
     background-color: #1FABFA;
     width: 400px;
     height: 630px;
     border-radius: 10px;
     margin: 10px auto;
+    padding-top:20px;
     align-items: center;
 }
-label{
+.label{
+    /* display: flex;
+    align-items: flex-start; */
     color: white;
     font-size: medium;
     margin-bottom: 20px;
     font-family: Poppins;
     font-weight: normal;
   }
-  input{
+  input{    
     border-radius: 7px;
     height: 30px;
     width:270px;
@@ -24,7 +28,7 @@ label{
   input:focus{
     outline: none;
 }
-  .signup-form{
+  .signup_form{
     justify-content: center;
     margin-left: 35px;
     margin-top: 20px;
@@ -45,7 +49,7 @@ label{
     font-family: Poppins;
     font-weight:lighter;
   }
-  .phone-card{
+  .phone_card{
     width: 50px;
 
   }
@@ -54,13 +58,27 @@ label{
     margin-left: 50px;
     
   }
-  .material-icons{
-    font-weight: lighter;
-    font-size:large;
-    position: relative;
-    margin-left: -25px;
-    margin-top: 15px;
-  }
+
+  .inputWrapper {   
+  position: relative;
+  width: 100%;
+}
+ .icon {
+  position: absolute;
+  font-weight: lighter;
+  right: 100px;
+  bottom: -10px;
+  /* r: -10px; */
+  top: 60%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #888;
+  font-size: 20px;
+}
+
+.icon:hover {
+  color: #333;
+}
   .underlay{
     color: white;
     font-size: 10px;
@@ -81,7 +99,7 @@ label{
     color:#1FABFA;
     margin-top: -50px;
   }
-  .sign-in{
+  .sign_in{
     color: white;
     margin:auto;
     font-family: Poppins;

@@ -1,4 +1,4 @@
-.invoicelist-container{
+.invoicelist_container{
     position: absolute;
     margin-left: 350px;
     margin-top: -770px;
@@ -7,13 +7,25 @@
 #createnewbtn{
     background-color: #1FABFA;
     margin-top: 0px;
+    border: none;
+    color: white;
+    
 }
-#invoice-header{
+#invoice_title{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    width: 900px;
+    width: 100%;
    
+}
+.action{
+    display: flex;
+    align-items: center;
+    justify-content: center;    
+}
+
+#delete{
+    width: 25px;
 }
 #shownumber{
     display: flex;
@@ -30,6 +42,7 @@
     flex-direction: row;
     justify-content: space-between;
     width: 800px;
+    margin-top: 30px;
 }
 #searchentry{
     background-color: #F5F5F5;
@@ -41,22 +54,24 @@
     width: 280px;
     justify-content: space-between;
 }
-.invoicelist{
+#invoicelist{
     display: flex;
     list-style-type: none;
-    align-items: center;
     justify-content: space-between;
     font-weight: bold;
-    width: 900px;
+    width: 800px;
     margin-left: -35px;
+    margin-top: 30px;
 }
-.invoicelistitem{
+
+#invoicelistitem{
     display: flex;
     list-style-type: none;
-    align-items: center;
     justify-content: space-between;
+    align-content: center;
     width: 900px;
     margin-left: -35px;
+    margin-top: 30px;
 }
 #invoicelistnav{
     display: flex;

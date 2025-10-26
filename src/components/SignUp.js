@@ -1,158 +1,210 @@
-import React from 'react'
-import './Signup.css';
-import {useState, useEffect} from 'react'
-import axios from '../api/axios'
-import {NavLink, useNavigate} from 'react-router-dom'
-import Select  from 'react-select';
-import Flag from 'react-world-flags'
+import React, { useState, useEffect } from 'react';
+import styles from './Signup.module.css';
+import axios from '../api/axios';
+import { NavLink, useNavigate } from 'react-router-dom';
+import Select from 'react-select';
+import Flag from 'react-world-flags';
+import Logo from '../assets/zucoinvoiceapplogo.png';
 
 function SignUp() {
   const [username, setUserName] = useState('');
-  const[phoneNumber, setPhoneNumber] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [selectedOption, setSelectedOption] = useState();
+  const [selectedOption, setSelectedOption] = useState(null);
   const [countriesList, setCountriesList] = useState([]);
   const [visible, setVisible] = useState(false);
+  const [confirmVisible, setConfirmVisible] = useState(false);
   const navigate = useNavigate();
 
-  const togglePasswordVisibility = () => {
-    setVisible(!visible);
-  };
-  
+  const togglePasswordVisibility = () => setVisible(!visible);
+  const toggleConfirmPasswordVisibility = () => setConfirmVisible(!confirmVisible);
+
+  // ✅ Fetch countries
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchCountries = async () => {
       try {
-        const response = await fetch('https://restcountries.com/v3.1/all');
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
+        const response = await axios.get("https://restcountries.com/v3.1/all?fields=name,cca2,idd,flags");
+        const data = await response.data;
+
+        // filter out invalid entries and build dial codes properly
         const countries = data.map((country) => ({
-                    code: country.cca2,
-                    name: country.name.common,
-                    dial_code: country.idd.root + (country.idd.suffixes ? country.idd.suffixes[0] : ''),
-                    flag: country.flag,
-                  }));
-        console.log(countries);
-        setCountriesList(countries);        
+  code: country.cca2,
+  name: country.name.common,
+  dial_code: country.idd?.root
+    ? country.idd.root + (country.idd.suffixes ? country.idd.suffixes[0] : "")
+    : "",
+  flag: country.flags?.png,
+}));
+setCountriesList(countries);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching countries:', error);
       }
     };
 
-    fetchData();
-  }, []); // Empty dependency array ensures this runs only once
+    fetchCountries();
+  }, []);
 
-  // const handleChange = (selectedOption) => {
-  //   setSelectedOption(selectedOption);
-  // };
-   
-   
-    
- 
-
-  const sortedItems = countriesList.sort((a, b) => a.name.localeCompare(b.name));
-
-  const options = sortedItems.map((country) => ({
+  // ✅ Map options for react-select
+  const options = countriesList.map((country) => ({
     value: country.dial_code,
-    label: `${country.name} (${country.dial_code})`,
-    customLabel: (
-      <div style={{ display: "flex", alignItems: "center", width: "100px" }}>
-        <Flag code={country.code} style={{ width: "40px", marginRight: "9px", marginLeft: "-3px", marginTop: "-1px"}} />
+    label: (
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <Flag
+          code={country.code}
+          style={{ width: 24, marginRight: 8, borderRadius: '3px' }}
+        />
         <span>{country.name}</span>
-        <span style={{ marginLeft: "auto" }}>{country.dial_code}</span>
+        <span style={{ marginLeft: 'auto', fontWeight: 'bold' }}>
+          {country.dial_code}
+        </span>
       </div>
-    ),    
+    ),
+    searchLabel: `${country.name} ${country.dial_code}`,
   }));
 
-  //Handle SIgnIn
   const REGISTER_URL = '/api/Auth/AddUser';
 
-  const handleSignIn = async () => {
+  const handleSignIn = async (e) => {
+    e.preventDefault();
 
-    if(phoneNumber.startsWith(0)){
-      phoneNumber.slice(1);
+    if (!selectedOption) {
+      alert('Please select your country code');
+      return;
     }
 
-    const pNumber = `${selectedOption}${phoneNumber}`;
-    console.log(pNumber);
-      try{
-        var response = await axios.post(REGISTER_URL, {
-          email: username,
-          phonenumber: pNumber,
-          password,
-          confirmPassword
-        }    
-      , {
-        // headers: {
-        //   "Content-Type": "Application/json"
-        // }
-  
-        
-      });
-        if(response.status === 200){ 
-          
-          alert("Registration successful");
-          navigate("/login");
-        }
-        else{
-          alert('Registration failed');
-        }
-      }
-      catch(error){
-        console.error('Register error:', error);
-      }
-  }
+    const phone = phoneNumber.startsWith('0')
+      ? phoneNumber.slice(1)
+      : phoneNumber;
+    const fullPhone = `${selectedOption.value}${phone}`;
 
-  
+    try {
+      const response = await axios.post(REGISTER_URL, {
+        email: username,
+        phonenumber: fullPhone,
+        password,
+        confirmPassword,
+      });
+
+      if (response.status === 200) {
+        alert('Registration successful');
+        navigate('/login');
+      } else {
+        alert('Registration failed');
+      }
+    } catch (error) {
+      console.error('Register error:', error);
+      alert('Error during registration');
+    }
+  };
+
   return (
     <>
-        <div className='signup-container'>
-        <div>
-            <br/>
-        <h2 className='start'>Get Started</h2>
-        <p className='start2'>Already have an account.  <NavLink to='/'>Sign In</NavLink></p>      
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', marginTop: '30px' }}>
+      <NavLink to="/"><img src={Logo} alt="logo" /></NavLink>
+      </div>
+    
+    <div className={styles.signup_container}>
+      <div>
+        <h2 className={styles.start}>Get Started</h2>
+        <p className={styles.start2}>
+          Already have an account? <NavLink to="/login">Sign In</NavLink>
+        </p>
+      </div>
+
+      <form className={styles.signup_form} onSubmit={handleSignIn}>
+        <label className={styles.label}>Email Address</label>
+        <input
+          type="email"
+          value={username}
+          onChange={(e) => setUserName(e.target.value)}
+          placeholder="Email Address"
+          required
+        />
+
+        <label className={styles.label}>Phone Number</label>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <Select
+            options={options}
+            value={selectedOption}
+            onChange={setSelectedOption}
+            placeholder="Select Country"
+            isSearchable={true}
+            filterOption={(option, input) =>
+              option.data.searchLabel
+                .toLowerCase()
+                .includes(input.toLowerCase())
+            }
+            styles={{
+              container: (base) => ({ ...base, width: '160px' }),
+              control: (base) => ({
+                ...base,
+                borderColor: '#ccc',
+                borderRadius: '8px',
+                minHeight: '45px',
+              }),
+              menu: (base) => ({
+                ...base,
+                zIndex: 9999,
+              }),
+            }}
+          />
+          <input
+            type="tel"
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+            placeholder="Enter Phone Number"
+            style={{ flex: 1, marginLeft: '10px' }}
+            required
+          />
         </div>
-        
-        <form className='signup-form'>
-        <label>Email Address</label>
-        <input type='text' value={username} onChange={(e) => setUserName(e.target.value)}placeholder='Email Address'/><br/><br/>
-        <label>PhoneNumber</label>
-        <div style={{display: 'flex', width: 300, marginLeft: -50, alignItems: 'center'}}>
-        <Select
-          options={options}
-          value={options.find((option) => option.value === selectedOption)}
-          filterOption={(candidate, input) => 
-            candidate.data.label.toLowerCase().includes(input.toLowerCase())}
-          onChange={(selected) => setSelectedOption(selected.value)}
-          getOptionLabel={(e) => e.customLabel}        
-          styles={{
-            control: (base) => ({ ...base, width: 100 }),
-          }}
-    />
-        <input type='tel' value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)}placeholder='Enter PhoneNumber' className='telephone'/><br/><br/>
-        </div><br/>
-        <label>Password</label><br/>
-        <input type='password' value={password} onChange={(e) => setPassword(e.target.value)}placeholder='Password'/>
-        <i className={`material-icons ${visible ? 'visible' : 'hidden'}`}  
-          onClick={togglePasswordVisibility}          
+
+        <label className={styles.label}>Password</label>
+        <div className={styles.inputWrapper}>
+          <input
+            type={visible ? 'text' : 'password'}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+            required
+          />
+          <i
+            className={`material-icons ${styles.icon}`}
+            onClick={togglePasswordVisibility}
           >
-            {visible ? 'visibility' : 'visibility_off'}</i><br/><br/>
-        <label>Confirm Password</label>
-        <input type='password' value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}placeholder='Password'/>
-        <i className={`material-icons ${visible ? 'visible' : 'hidden'}`}  
-          onClick={togglePasswordVisibility}          
+            {visible ? 'visibility' : 'visibility_off'}
+          </i>
+        </div>
+
+        <label className={styles.label}>Confirm Password</label>
+        <div className={styles.inputWrapper}>
+          <input
+            type={confirmVisible ? 'text' : 'password'}
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            placeholder="Confirm Password"
+            required
+          />
+          <i
+            className={`material-icons ${styles.icon}`}
+            onClick={toggleConfirmPasswordVisibility}
           >
-            {visible ? 'visibility' : 'visibility_off'}</i><br/>
-        <p className='underlay'>By creating an account you agree to our <span>Terms and Conditions</span></p>
-        <button type='submit' onClick={handleSignIn} id='createaccount'>Create Account</button><br/>        
-        </form>
-        
-        
+            {confirmVisible ? 'visibility' : 'visibility_off'}
+          </i>
+        </div>
+
+        <p className={styles.underlay}>
+          By creating an account, you agree to our{' '}
+          <span>Terms and Conditions</span>
+        </p>
+
+        <button type="submit" id={styles.createaccount}>
+          Create Account
+        </button>
+      </form>
     </div>
     </>
-  )
+  );
 }
 
-export default SignUp
+export default SignUp;

@@ -1,0 +1,131 @@
+.subscriptionContainer {
+  max-width: 600px;
+  /* margin: 60px auto; */
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    position: relative;
+    margin-left: 400px;
+    margin-top:  -800px;
+    font-family: "Poppins"; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.subscriptionTitle {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 25px;
+}
+
+/* === Current Subscription Card === */
+.statusCard {
+  background: #f3f8ff;
+  border-left: 5px solid #007bff;
+  padding: 15px 20px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+}
+
+.statusCard h3 {
+  margin-bottom: 8px;
+  color: #007bff;
+  font-size: 1.2rem;
+}
+
+.daysLeft {
+  color: #28a745;
+  font-weight: 600;
+  margin-top: 5px;
+}
+
+/* === Plans === */
+.plansGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.planCard {
+  background: #f9fafc;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  padding: 25px 15px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.planCard:hover {
+  border-color: #007bff;
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.1);
+  transform: translateY(-3px);
+}
+
+.selected {
+  background: #e7f1ff;
+  border-color: #007bff;
+}
+
+.planName {
+  font-size: 1.2rem;
+  color: #333;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.planPrice {
+  font-size: 1rem;
+  color: #007bff;
+  font-weight: bold;
+}
+
+/* === Paystack Button === */
+.paystackSection {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.paystackButton {
+  background-color: #007bff !important;
+  color: #fff !important;
+  border: none !important;
+  padding: 12px 24px !important;
+  border-radius: 8px !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.paystackButton:hover {
+  background-color: #0056b3 !important;
+}
+
+/* === Message === */
+.message {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 1rem;
+  color: #28a745;
+  font-weight: 500;
+}
+
+/* === Responsive === */
+@media (max-width: 600px) {
+  .subscriptionContainer {
+    position: relative;
+    margin-left: 400px;
+    margin-top:  -800px;
+    padding: 15px;
+  }
+
+  .subscriptionTitle {
+    font-size: 1.5rem;
+  }
+
+  .planCard {
+    padding: 20px 10px;
+  }
+}

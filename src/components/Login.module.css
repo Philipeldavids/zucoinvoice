@@ -1,0 +1,181 @@
+.login_page {
+  background-color: #1fabfa;
+  max-width: 360px;
+  width: 90%;
+  min-height: 400px;
+  margin: 40px auto;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 20px;
+  box-sizing: border-box;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.login_container {
+  width: 100%;
+  position: relative;
+}
+
+.welcome {
+  color: white;
+  font-size: 1.1rem;
+  margin-top: 2px;
+  font-family: Poppins, sans-serif;
+  font-weight: 600;
+  text-align: center;
+}
+
+label {
+  color: white;
+  font-size: 0.9rem;
+  font-family: Poppins, sans-serif;
+  margin-bottom: 8px;
+  display: block;
+}
+
+input {
+  border-radius: 7px;
+  height: 35px;
+  width: 95%;
+  border: none;
+  margin-top: 5px;
+  padding: 5px 10px;
+  box-sizing: border-box;
+}
+
+input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.4);
+}
+
+.remember_me {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 20px;
+  align-items: center;
+  justify-items: center;
+}
+
+.checkbox {
+  width: 14px;
+  height: 14px;
+}
+
+.underlay1,
+.underlay2 {
+  color: white;
+  font-size: 0.75rem;
+  font-family: Poppins, sans-serif;
+  font-weight: 300;
+}
+
+.spinner {
+  position: relative;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+  margin: 10px auto;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.login_form {
+  width: 100%;
+  margin-top: 10px;
+  position: relative;
+}
+
+.icon { 
+  position: relative;
+  margin-top: 20px;
+  right: 20px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #ddd;
+  font-size: 18px;
+}
+
+.icon:hover {
+  color: #fff;
+}
+
+.login_signup {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 90%;
+  font-size: 0.85rem;
+  text-decoration: none;  
+}
+
+.login_signup a {
+  color: white;
+  text-decoration: none;
+}
+
+.login_signup a:hover {
+  text-decoration: underline;
+}
+
+.button {  
+  background-color: white;
+  color: #1fabfa;
+  border-radius: 8px;
+  width: 120px;
+  padding: 8px;
+  border: none;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-top: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.button:hover {
+  background-color: #1fabfa;
+  color: white;
+  border: 2px solid white;
+}
+
+/* 📱 Responsive styles */
+@media (max-width: 600px) {
+  .login_page {
+    width: 95%;
+    padding: 25px 15px;
+    margin-top: 40px;
+  }
+
+  .welcome {
+    font-size: 1rem;
+  }
+
+  input {
+    height: 32px;
+    width: 95%;
+  }
+
+
+
+  .remember_me,
+  .login_signup {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 6px;
+  }
+}
