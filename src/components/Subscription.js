@@ -123,7 +123,7 @@ useEffect(() => {
       )}
 
       {/* Subscription Plans */}
-      <h3 className={styles.plansHeading}>Upgrade / Renew Plan</h3>
+      <h3 className={styles.plansHeading}>Upgrade/Renew Plan</h3>
       <div className={styles.plansGrid}>
         {plans.map((plan) => (
           <div
