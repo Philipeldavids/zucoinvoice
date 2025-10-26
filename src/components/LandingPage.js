@@ -45,10 +45,10 @@ export default function LandingPage() {
       freeLimit: 5,
       highlight: true,
     },
-    { name: "30 Days", price: 1000, desc: "Perfect for quick projects or trials." },
-    { name: "90 Days", price: 2500, desc: "Best for freelancers and small teams." },
-    { name: "6 Months", price: 4000, desc: "Ideal for steady business growth." },
-    { name: "1 Year", price: 7000, desc: "Save more with our annual plan." },
+    { name: "30 Days", price: 5000, desc: "Perfect for quick projects or trials." },
+    { name: "90 Days", price: 10000, desc: "Best for freelancers and small teams." },
+    { name: "6 Months", price: 20000, desc: "Ideal for steady business growth." },
+    { name: "1 Year", price: 30000, desc: "Save more with our annual plan." },
   ];
 
 const handleChoosePlan = async (planName) => {
