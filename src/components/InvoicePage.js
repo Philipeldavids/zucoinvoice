@@ -84,14 +84,17 @@ const generatePDF = useCallback(async () => {
       currency: "NGN",
       minimumFractionDigits: 2,
     }).format(invoic.totalPrice);
-    
+    console.log(formatted);
   } else {
     formatted = "";
   }
 
   const finalY = doc.lastAutoTable.finalY + 10;
-  doc.text(`Tax: %${invoic.tax}`, 20, finalY);
-  doc.text(`Total: ${formatted}`, 20, finalY + 10);
+   doc.setFont("helvetica", "normal");
+  doc.setFontSize(12);
+  doc.text(`Tax: %${invoic.tax}`, 20, finalY); 
+  doc.text(`Total: ${formatted}`, 20, finalY + 10, { encoding: "UTF-8" });
+  //doc.text(`Total: ${formatted}`, 20, finalY + 10);
 
   // Footer
   doc.setFontSize(10);
