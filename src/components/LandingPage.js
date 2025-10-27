@@ -43,12 +43,12 @@ export default function LandingPage() {
       price: 0,
       desc: "Get started with 5 free invoice generations — no credit card required!",
       freeLimit: 5,
-      highlight: true,
+      highlight: true
     },
-    { name: "30 Days", price: 5000, desc: "Perfect for quick projects or trials." },
-    { name: "90 Days", price: 10000, desc: "Best for freelancers and small teams." },
-    { name: "6 Months", price: 20000, desc: "Ideal for steady business growth." },
-    { name: "1 Year", price: 30000, desc: "Save more with our annual plan." },
+    { name: "30 days", price: 5000, desc: "Perfect for quick projects or trials." },
+    { name: "90 days", price: 10000, desc: "Best for freelancers and small teams." },
+    { name: "6 months", price: 20000, desc: "Ideal for steady business growth." },
+    { name: "1 year", price: 30000, desc: "Save more with our annual plan." },
   ];
 
 const handleChoosePlan = async (planName) => {
@@ -68,12 +68,12 @@ const handleChoosePlan = async (planName) => {
 			}
 		});
 
-	console.log(res.data);
+	
 
 	if (res.data) {
 	if (res.data.paymentUrl) {
 	window.location.href = res.data.paymentUrl;// redirect to Paystack checkout
-		navigate("/dashboard");
+		//navigate("/dashboard");
 	} else {
 	alert(`✅ Successfully subscribed to ${planName} plan!`);
 	}
