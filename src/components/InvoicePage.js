@@ -72,7 +72,7 @@ const generatePDF = useCallback(async () => {
 
   doc.autoTable({
     startY: 70,
-    head: [["Description", "Quantity", "Price", "Total"]],
+    head: [["Description", "Quantity", "Price(NGN)", "Total(NGN)"]],
     body: tableData,
   });
 
@@ -93,7 +93,7 @@ const generatePDF = useCallback(async () => {
    doc.setFont("helvetica", "normal");
   doc.setFontSize(12);
   doc.text(`Tax: %${invoic.tax}`, 20, finalY); 
-  doc.text(`Total: ${formatted}`, 20, finalY + 10, { encoding: "UTF-8" });
+  doc.text(`Total(NGN): ${formatted}`, 20, finalY + 10, { encoding: "UTF-8" });
   //doc.text(`Total: ${formatted}`, 20, finalY + 10);
 
   // Footer
