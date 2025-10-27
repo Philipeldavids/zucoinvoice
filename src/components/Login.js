@@ -1,20 +1,61 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styles from './Login.module.css';
 import axios from "../api/axios";
-import { NavLink, useNavigate} from 'react-router-dom';
+import { NavLink, useLocation} from 'react-router-dom';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Logo from '../assets/zucoinvoiceapplogo.png';
 
 
 function Login() {
-
+  const location = useLocation();
   const [formValues, setFormValues] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [plan , setPlan] = useState('');
 
+   useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        //const status = params.get("status");
+        const planName = params.get("plan");
+      if(planName){
+        setPlan(planName);
+      }
+    },[location]);
 
+const handleChoosePlan = async (user) => {
+                
+              try {
+          const res = await axios.post("api/v1/Subscription/select", 
+            {plan: plan // request body
+          },
+          {
+            headers: {
+            Authorization: `Bearer ${user?.token}`,
+            "Content-Type": "application/json"
+            }
+          });
+      
+        
+      
+        if (res.data) {
+        if (res.data.paymentUrl) {
+        window.location.href = res.data.paymentUrl;// redirect to Paystack checkout
+          //navigate("/dashboard");
+        } else {
+        alert(`✅ Successfully subscribed to ${plan} plan!`);
+        }
+        } else {
+        alert("❌ Failed to activate plan. Please try again.");
+        }
+      } catch (err) {
+      console.error("Subscription error:", err);
+      alert("Something went wrong while selecting your plan.");
+      };
+      };
+
+  
    // Handle input change
    const handleChange = (e) => {
     const { name, value } = e.target;
@@ -48,7 +89,7 @@ function Login() {
     setVisible(!visible);
   };
   const LOGIN_URL = '/api/Auth/Login';
-  const navigate = useNavigate();
+  
 
   const handleLogin = async (event)=>{  
     event.preventDefault();
@@ -77,8 +118,8 @@ function Login() {
       if(response.status === 200){
         
        sessionStorage.setItem('user', JSON.stringify(response.data))
-       
-        navigate("/dashboard");
+        handleChoosePlan(response.data);
+        //navigate("/dashboard");
       }
       else{
         alert("Incorrect Credentials");

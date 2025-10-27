@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useNavigate, useCallback } from 'react';
 import Image from '../assets/zucoinvoiceapplogo.png';
 import Image2 from '../assets/business 1.png';
 import Image3 from '../assets/invoice 1.png';
@@ -15,14 +15,18 @@ function DashBoardLayout() {
   const [isOpen, setIsOpen] = useState(false);
   const [text, setText] = useState('');
   const [user, setUser] = useState(null);
-
+  const navigate = useNavigate();
+   
   useEffect(() => {
-    const loggedInUser = sessionStorage.getItem('user');
-    if (loggedInUser) {
-      const foundUser = JSON.parse(loggedInUser);
-      setUser(foundUser);
-    }
-  }, []);
+      const loggedInUser = sessionStorage.getItem("user");
+      if (loggedInUser) {
+        const foundUser = JSON.parse(loggedInUser);
+        setUser(foundUser);
+       
+      } else{
+          navigate("/login");
+      }
+    }, [navigate]);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);

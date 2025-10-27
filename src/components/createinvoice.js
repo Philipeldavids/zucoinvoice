@@ -51,8 +51,10 @@ function CreateInvoice() {
       setUser(foundUser);
       getContact(foundUser?.id);
       getInvoiceNumber();
+    } else{
+        navigate("/login");
     }
-  }, []);
+  }, [navigate]);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);

@@ -7,6 +7,7 @@ import { useLocation } from 'react-router-dom';
 function Home() {
 
   const location = useLocation();
+  
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);

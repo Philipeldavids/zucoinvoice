@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Signup.module.css';
 import axios from '../api/axios';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import Select from 'react-select';
 import Flag from 'react-world-flags';
 import Logo from '../assets/zucoinvoiceapplogo.png';
 
 function SignUp() {
+  const [plan , setPlan] = useState('');
   const [username, setUserName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
@@ -15,10 +16,19 @@ function SignUp() {
   const [countriesList, setCountriesList] = useState([]);
   const [visible, setVisible] = useState(false);
   const [confirmVisible, setConfirmVisible] = useState(false);
-  const navigate = useNavigate();
-
+  
+const location = useLocation();
   const togglePasswordVisibility = () => setVisible(!visible);
   const toggleConfirmPasswordVisibility = () => setConfirmVisible(!confirmVisible);
+
+  useEffect(() => {
+      const params = new URLSearchParams(location.search);
+      //const status = params.get("status");
+      const planName = params.get("plan");
+    if(planName){
+      setPlan(planName);
+    }
+  },[location])
 
   // ✅ Fetch countries
   useEffect(() => {
@@ -64,7 +74,7 @@ setCountriesList(countries);
   }));
 
   const REGISTER_URL = '/api/Auth/AddUser';
-
+   
   const handleSignIn = async (e) => {
     e.preventDefault();
 
@@ -87,8 +97,8 @@ setCountriesList(countries);
       });
 
       if (response.status === 200) {
-        alert('Registration successful');
-        navigate('/login');
+        alert('Registration successful, Please login');
+        window.location.href = `/login?plan=${encodeURIComponent(plan)}`;
       } else {
         alert('Registration failed');
       }
