@@ -5,6 +5,7 @@ import { NavLink, useLocation} from 'react-router-dom';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Logo from '../assets/zucoinvoiceapplogo.png';
+import { useNavigate } from 'react-router-dom';
 
 
 function Login() {
@@ -24,6 +25,8 @@ function Login() {
       }
     },[location]);
 
+    const navigate = useNavigate();
+    
 const handleChoosePlan = async (user) => {
                 
               try {
@@ -119,7 +122,7 @@ const handleChoosePlan = async (user) => {
         
        sessionStorage.setItem('user', JSON.stringify(response.data))
         handleChoosePlan(response.data);
-        //navigate("/dashboard");
+        navigate("/dashboard");
       }
       else{
         alert("Incorrect Credentials");

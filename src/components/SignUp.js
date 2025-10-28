@@ -5,6 +5,7 @@ import { NavLink, useLocation } from 'react-router-dom';
 import Select from 'react-select';
 import Flag from 'react-world-flags';
 import Logo from '../assets/zucoinvoiceapplogo.png';
+import { ToastContainer, toast } from "react-toastify";
 
 function SignUp() {
   const [plan , setPlan] = useState('');
@@ -13,6 +14,7 @@ function SignUp() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [selectedOption, setSelectedOption] = useState(null);
+   const [loading, setLoading] = useState(false);
   const [countriesList, setCountriesList] = useState([]);
   const [visible, setVisible] = useState(false);
   const [confirmVisible, setConfirmVisible] = useState(false);
@@ -95,7 +97,7 @@ setCountriesList(countries);
         password,
         confirmPassword,
       });
-
+      setLoading(true);
       if (response.status === 200) {
         alert('Registration successful, Please login');
         window.location.href = `/login?plan=${encodeURIComponent(plan)}`;
@@ -104,8 +106,13 @@ setCountriesList(countries);
       }
     } catch (error) {
       console.error('Register error:', error);
-      alert('Error during registration');
-    }
+      // alert('Error during registration');
+      toast.error("Error during registration! Kindly try again", { position: 'top-right'});
+        }
+        finally{
+          setLoading(false);
+    
+        }
   };
 
   return (
@@ -207,12 +214,14 @@ setCountriesList(countries);
           By creating an account, you agree to our{' '}
           <span>Terms and Conditions</span>
         </p>
-
+            {loading && <div className={styles.spinner}></div>}                    
+                      
         <button type="submit" id={styles.createaccount}>
           Create Account
         </button>
       </form>
     </div>
+    <ToastContainer/>
     </>
   );
 }
