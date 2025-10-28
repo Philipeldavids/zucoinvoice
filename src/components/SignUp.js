@@ -79,7 +79,7 @@ setCountriesList(countries);
    
   const handleSignIn = async (e) => {
     e.preventDefault();
-
+     setLoading(true);
     if (!selectedOption) {
       alert('Please select your country code');
       return;
@@ -97,7 +97,7 @@ setCountriesList(countries);
         password,
         confirmPassword,
       });
-      setLoading(true);
+     
       if (response.status === 200) {
         alert('Registration successful, Please login');
         window.location.href = `/login?plan=${encodeURIComponent(plan)}`;
