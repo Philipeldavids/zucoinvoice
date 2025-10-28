@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useNavigate } from "react";
 import styles from "./Contact.module.css";
 import axios from "../api/axios";
 import DashBoardLayout from "./DashBoardLayout";
 import { Modal, Button } from "react-bootstrap";
 import DeleteIcon from "../assets/Frame.png"; // same delete icon used in invoice list
-import { useNavigate } from 'react-router-dom'
+
 
 function Contact() {
   const [name, setName] = useState("");
