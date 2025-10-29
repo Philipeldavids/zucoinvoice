@@ -28,15 +28,22 @@
     font-family: Poppins;
     font-weight: normal;
   }
-  input{    
+  .input{    
     border-radius: 7px;
     height: 30px;
-    width:270px;
+    width: 90%;
     border:none;
     margin-top: 10px;
   
   }
-  input:focus{
+  .input2{    
+    border-radius: 7px;
+    height: 30px;
+    width: 150px;
+    border:none;
+    margin-top: 10px;  
+  }
+  .input:focus{
     outline: none;
 }
   .signup_form{
@@ -72,13 +79,15 @@
 
   .inputWrapper {   
   position: relative;
-  width: 100%;
+  display: flex;
+  flex-direction: row;
+  width: 95%;
 }
  .icon {
-  position: absolute;
+  position: relative;
   font-weight: lighter;
-  right: 100px;
-  bottom: -10px;
+  right: 22px;
+  bottom: -20px;
   /* r: -10px; */
   top: 60%;
   transform: translateY(-50%);
@@ -98,8 +107,9 @@
     margin-left: -15px;
     margin-top: 25px;
   }
-  #createaccount{
-    width: 270px;
+  .createaccount{
+    width: 80%;
+    left: 30px;
     background-color: white;
     border: none;
     border-radius: 10px;
@@ -108,7 +118,7 @@
     font-weight: bold;
     font-size: small;
     color:#1FABFA;
-    margin-top: -50px;
+    margin-top: 0px;
   }
   .sign_in{
     color: white;

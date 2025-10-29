@@ -64,12 +64,12 @@ setCountriesList(countries);
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <Flag
           code={country.code}
-          style={{ width: 24, marginRight: 8, borderRadius: '3px' }}
+          style={{ width: 50, marginRight: 15, borderRadius: '3px' }}
         />
-        <span>{country.name}</span>
+        {/* <span>{country.name}</span>
         <span style={{ marginLeft: 'auto', fontWeight: 'bold' }}>
           {country.dial_code}
-        </span>
+        </span> */}
       </div>
     ),
     searchLabel: `${country.name} ${country.dial_code}`,
@@ -137,11 +137,58 @@ setCountriesList(countries);
           onChange={(e) => setUserName(e.target.value)}
           placeholder="Email Address"
           required
+          className={styles.input}
         />
 
         <label className={styles.label}>Phone Number</label>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent:'space-between' }}>
           <Select
+  options={options}
+  value={selectedOption}
+  onChange={setSelectedOption}
+  placeholder="Select Country"
+  isSearchable={true}
+  filterOption={(option, input) =>
+    option.data.searchLabel.toLowerCase().includes(input.toLowerCase())
+  }
+  styles={{
+    container: (base) => ({
+      ...base,
+      width: '150px', // ⬆️ increase width to fit flag + text
+    }),
+    control: (base) => ({
+      ...base,
+      borderColor: '#ccc',
+      borderRadius: '8px',
+      minHeight: '30px',
+      display: 'flex',
+      alignItems: 'center',
+      paddingLeft: '8px', // ⬅️ adds space for the flag
+    }),
+    valueContainer: (base) => ({
+      ...base,
+      padding: '0 8px',
+      display: 'flex',
+      width: 100,
+      alignItems: 'center',
+      gap: '8px', // ensures spacing between flag and label
+    }),
+    menu: (base) => ({
+      ...base,
+      zIndex: 9999,
+    }),
+    option: (base, state) => ({
+      ...base,
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px', // keeps flag and text aligned
+      backgroundColor: state.isFocused ? '#f1f1f1' : 'white',
+      color: 'black',
+    }),
+  }}
+/>
+
+          {/* <Select
             options={options}
             value={selectedOption}
             onChange={setSelectedOption}
@@ -153,7 +200,7 @@ setCountriesList(countries);
                 .includes(input.toLowerCase())
             }
             styles={{
-              container: (base) => ({ ...base, width: '160px' }),
+              container: (base) => ({ ...base, width: '100px' }),
               control: (base) => ({
                 ...base,
                 borderColor: '#ccc',
@@ -165,7 +212,7 @@ setCountriesList(countries);
                 zIndex: 9999,
               }),
             }}
-          />
+          /> */}
           <input
             type="tel"
             value={phoneNumber}
@@ -173,6 +220,7 @@ setCountriesList(countries);
             placeholder="Enter Phone Number"
             style={{ flex: 1, marginLeft: '10px' }}
             required
+            className={styles.input2}
           />
         </div>
 
@@ -216,7 +264,7 @@ setCountriesList(countries);
         </p>
             {loading && <div className={styles.spinner}></div>}                    
                       
-        <button type="submit" id={styles.createaccount}>
+        <button type="submit" className={styles.createaccount}>
           Create Account
         </button>
       </form>
