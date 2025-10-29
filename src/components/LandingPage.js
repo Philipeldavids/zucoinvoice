@@ -116,7 +116,7 @@ alert("Something went wrong while selecting your plan.");
           </div>
         </div>
         <div className={styles.heroImage}>
-          <img src={landingImg} alt="Zuco Dashboard" />
+          <img src={landingImg} alt="Zuco Dashboard"  />
         </div>
       </section>
 
