@@ -31,7 +31,7 @@ const generatePDF = useCallback(async () => {
     const user = JSON.parse(sessionStorage.getItem("user"));
     if (user?.id) {
       const subRes = await axios.get(`api/v1/subscription/current/${user.id}`);
-      subscriptionStatus = subRes.data?.IsActive || false;
+      subscriptionStatus = subRes.data?.hasActiveSubscription || false;
     }
   } catch (err) {
     console.warn("Could not fetch subscription status, assuming free tier.");

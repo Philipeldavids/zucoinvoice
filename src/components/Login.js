@@ -5,7 +5,6 @@ import { NavLink, useLocation} from 'react-router-dom';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Logo from '../assets/zucoinvoiceapplogo.png';
-import { useNavigate } from 'react-router-dom';
 
 
 function Login() {
@@ -25,9 +24,7 @@ function Login() {
       }
     },[location]);
 
-    const navigate = useNavigate();
-    
-const handleChoosePlan = async (user) => {
+   const handleChoosePlan = async (user) => {
                 
               try {
           const res = await axios.post("api/v1/Subscription/select", 
@@ -55,8 +52,9 @@ const handleChoosePlan = async (user) => {
       } catch (err) {
       console.error("Subscription error:", err);
       alert("Something went wrong while selecting your plan.");
+      }
       };
-      };
+
 
   
    // Handle input change
@@ -121,8 +119,11 @@ const handleChoosePlan = async (user) => {
       if(response.status === 200){
         
        sessionStorage.setItem('user', JSON.stringify(response.data))
+       if(plan){
         handleChoosePlan(response.data);
-        navigate("/dashboard");
+          window.location.href = `/dashboard?plan=${encodeURIComponent(plan)}`;
+       }     
+        window.location.href = `/dashboard`;
       }
       else{
         alert("Incorrect Credentials");

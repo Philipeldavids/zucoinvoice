@@ -4,21 +4,23 @@ import styles from './Home.module.css';
 import Image1 from '../assets/image 1.png';
 import { useLocation } from 'react-router-dom';
 
+
 function Home() {
 
   const location = useLocation();
-  
+    
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     //const status = params.get("status");
     const message = params.get("message");
-
+   // const planName = params.get("plan");
     if (message) {
       alert(message); // or show a toast/snackbar
     }
+   
   }, [location]);
-  
+ 
   return (
     
     <div>
