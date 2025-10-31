@@ -36,8 +36,8 @@ function CreateInvoice() {
   const [address, setAddress] = useState('');
   const [phonenumber, setPhoneNumber] = useState('');
 
-  const ADDCONTACT_URL = "api/Contact/AddContact";
-  const GETCONTACTS_URL = "api/Contact/GetContactByUser/";
+  const ADDCONTACT_URL = "api/v1/Contact/AddContact";
+  const GETCONTACTS_URL = "api/v1/Contact/GetContactByUser/";
   const GETINVNUMBER_URL = "api/v1/Invoice/GetInvoiceNumber";
   const CREATE_URL = 'api/v1/Invoice/Create';
 

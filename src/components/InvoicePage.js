@@ -130,6 +130,34 @@ const generatePDF = useCallback(async () => {
   
     }, [generatePDF]);
       
+    // Send Invoice via email
+const sendInvoice = async () => {
+  try {
+    const pdfBlob = await generatePDF();
+    
+     // adjust this if your invoice object uses a different field
+    const respons = await axios.get(`api/v1/Contact/GetContactEmailAdd/${invoice.client}`);
+    const customerEmail = respons.data;
+    const formData = new FormData();
+    formData.append("file", pdfBlob, `Invoice_${invoice.invoiceNumber}.pdf`);
+    formData.append("invoiceId", invoiceId);
+    formData.append("email", customerEmail);
+
+    const response = await axios.post("api/v1/Invoice/SendInvoice", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    if (response.status === 200) {
+      alert("Invoice sent successfully!");
+    } else {
+      alert("Failed to send invoice.");
+    }
+  } catch (error) {
+    console.error("Error sending invoice:", error);
+    alert("An error occurred while sending the invoice.");
+  }
+};
+
       // View PDF in a new tab
       const viewPDF = async () => {
         const pdfBlob = await generatePDF();
@@ -158,6 +186,8 @@ const generatePDF = useCallback(async () => {
       <div style={{ display: "flex", width: "400px", justifyContent: "space-between", marginTop: "30px" }}>
       <button onClick={viewPDF}>View Invoice</button>
       <button onClick={downloadPDF}>Download Invoice</button>
+      <button onClick={sendInvoice}>Send Invoice</button>
+
       </div>
       </div>
     </div>

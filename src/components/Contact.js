@@ -21,9 +21,9 @@ function Contact() {
   const [currentPage, setCurrentPage] = useState(1);
   const [entriesPerPage, setEntriesPerPage] = useState(5);
 
-  const ADDCONTACT_URL = "api/Contact/AddContact";
-  const GETCONTACTS_URL = "api/Contact/GetContactByUser/";
-  const DELETECONTACT_URL = "api/Contact/delete/";
+  const ADDCONTACT_URL = "api/v1/Contact/AddContact";
+  const GETCONTACTS_URL = "api/v1/Contact/GetContactByUser/";
+  const DELETECONTACT_URL = "api/v1//Contact/delete/";
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
