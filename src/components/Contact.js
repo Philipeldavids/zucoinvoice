@@ -23,7 +23,7 @@ function Contact() {
 
   const ADDCONTACT_URL = "api/v1/Contact/AddContact";
   const GETCONTACTS_URL = "api/v1/Contact/GetContactByUser/";
-  const DELETECONTACT_URL = "api/v1//Contact/delete/";
+  const DELETECONTACT_URL = "api/v1/Contact/delete/";
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
