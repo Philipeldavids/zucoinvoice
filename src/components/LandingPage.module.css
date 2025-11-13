@@ -387,7 +387,7 @@
   }
 
   .hero {
-    flex-direction: column-reverse;
+    flex-direction: column;
     text-align: center;
     padding: 60px 30px;
   }
