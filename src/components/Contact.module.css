@@ -87,3 +87,66 @@
     width:30px;
     height:30px;    
 }
+
+#edit{
+     width:30px;
+    height:30px;    
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal {
+  background: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.modal h2 {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.modal input {
+  display: block;
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.modalActions button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.modalActions button:first-child {
+  background-color: #2b7a78;
+  color: white;
+}
+
+.modalActions button:last-child {
+  background-color: #ccc;
+  color: black;
+}

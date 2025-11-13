@@ -12,7 +12,7 @@ const plans = [
 ];
 
 export default function SubscriptionPage() {
-  const publicKey = "pk_test_33885714e7aa0a38c1ef242652828db5404a83e4"; // Replace with your Paystack public key
+  const publicKey = "pk_live_f2f136203ac025fe56f1456c962f30781ddead18"; // Replace with your Paystack public key
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [message, setMessage] = useState("");
   const [subscription, setSubscription] = useState(null);

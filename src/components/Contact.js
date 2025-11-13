@@ -5,6 +5,7 @@ import DashBoardLayout from "./DashBoardLayout";
 import { Modal, Button } from "react-bootstrap";
 import DeleteIcon from "../assets/Frame.png"; // same delete icon used in invoice list
 import { useNavigate } from 'react-router-dom';
+import EditIcon from "../assets/edit-button-svgrepo-com.svg";
 
 function Contact() {
   const [name, setName] = useState("");
@@ -16,6 +17,42 @@ function Contact() {
   const [contacts, setContacts] = useState([]);
   const [query, setQuery] = useState("");
   const [filteredContacts, setFilteredContacts] = useState([]);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+const [selectedContact, setSelectedContact] = useState({
+  contactId: "",
+  customerName: "",
+  customerEmail: "",
+  customerAddress: "",
+  customerPhoneNumber: "",
+  userId: "",
+});
+
+const handleEdit = (contact) => {
+  setSelectedContact(contact);
+  setIsEditModalOpen(true);
+};
+
+const handleEditChange = (e) => {
+  const { name, value } = e.target;
+  setSelectedContact((prev) => ({
+    ...prev,
+    [name]: value,
+  }));
+};
+
+const handleSaveEdit = async () => {
+  try {
+    await axios.put(`api/v1/contact/EditContact/${selectedContact.contactId}`, selectedContact);
+    alert("Contact updated successfully!");
+    setIsEditModalOpen(false);
+    // Refresh contact list after save
+    getContacts(user?.id);
+  } catch (error) {
+    console.error("Error updating contact:", error);
+    alert("Failed to update contact.");
+  }
+};
+
 
   // pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -158,32 +195,43 @@ function Contact() {
         </div>
 
         <div>
-          <ul className={styles.invoicelist}>
-            <li>Name</li>
-            <li>Email</li>
-            <li>Address</li>
-            <li>PhoneNumber</li>
-            <li>Action</li>
-          </ul>
+  <ul className={styles.invoicelist}>
+    <li>Name</li>
+    <li>Email</li>
+    <li>Address</li>
+    <li>PhoneNumber</li>
+    <li>Action</li>
+  </ul>
 
-          {currentContacts.map((contact) => (
-            <ul key={contact.contactId} className={styles.invoicelistitem}>
-              <li>{contact.customerName}</li>
-              <li>{contact.customerEmail}</li>
-              <li>{contact.customerAddress}</li>
-              <li>{contact.customerPhoneNumber}</li>
-              <li>
-                <img
-                  src={DeleteIcon}
-                  alt="delete"
-                  id={styles.delete}
-                  onClick={() => handleDelete(contact.contactId)}
-                  style={{ cursor: "pointer" }}
-                />
-              </li>
-            </ul>
-          ))}
-        </div>
+  {currentContacts.map((contact) => (
+    <ul key={contact.contactId} className={styles.invoicelistitem}>
+      <li>{contact.customerName}</li>
+      <li>{contact.customerEmail}</li>
+      <li>{contact.customerAddress}</li>
+      <li>{contact.customerPhoneNumber}</li>
+      <li style={{ display: "flex", gap: "5px" }}>
+        {/* ✏️ Edit Button */}
+        <img
+          src={EditIcon} // import your Edit icon at the top
+          alt="edit"
+          id={styles.edit}
+          onClick={() => handleEdit(contact)}
+          style={{ cursor: "pointer" }}
+        />
+
+        {/* 🗑️ Delete Button */}
+        <img
+          src={DeleteIcon}
+          alt="delete"
+          id={styles.delete}
+          onClick={() => handleDelete(contact.contactId)}
+          style={{ cursor: "pointer" }}
+        />
+      </li>
+    </ul>
+  ))}
+</div>
+
 
         <div id={styles.invoicelistnav}>
           <p>
@@ -215,6 +263,50 @@ function Contact() {
           </div>
         </div>
       </div>
+{isEditModalOpen && (
+    <div className={styles.modalOverlay}>
+      <div className={styles.modal}>
+        <h2>Edit Contact</h2>
+        <label>Name:</label>
+        <input
+          type="text"
+          name="customerName"
+          value={selectedContact.customerName}
+          onChange={handleEditChange}
+        />
+
+        <label>Email:</label>
+        <input
+          type="email"
+          name="customerEmail"
+          value={selectedContact.customerEmail}
+          onChange={handleEditChange}
+        />
+
+        <label>Address:</label>
+        <input
+          type="text"
+          name="customerAddress"
+          value={selectedContact.customerAddress}
+          onChange={handleEditChange}
+        />
+
+        <label>Phone:</label>
+        <input
+          type="text"
+          name="customerPhoneNumber"
+          value={selectedContact.customerPhoneNumber}
+          onChange={handleEditChange}
+        />
+
+        <div className={styles.modalActions}>
+          <button onClick={handleSaveEdit}>Save</button>
+          <button onClick={() => setIsEditModalOpen(false)}>Cancel</button>
+        </div>
+      </div>
+    </div>
+  )}
+
 
       {/* Create New Contact Modal */}
       <Modal show={show} onHide={handleClose}>

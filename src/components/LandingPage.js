@@ -206,6 +206,7 @@ alert("Something went wrong while selecting your plan.");
         <h2>Ready to simplify your invoicing?</h2>
         <p>Join thousands of smart businesses already using Zuco.</p>
         <NavLink to="/signup"> <button className={styles.primaryBtn}>Create Free Account</button></NavLink> 
+        <div>Mail for Support: contact@nevida.com.ng </div>
         <p className={styles.copy}>
           © {new Date().getFullYear()} Zuco — All Rights Reserved.
         </p>

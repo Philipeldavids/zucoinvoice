@@ -185,7 +185,7 @@
 }
 
 /* Responsive adjustments */
-@media (max-width: 900px) {
+/* @media (max-width: 900px) {
   .invoiceheading,
   .input_loading {
     grid-template-columns: repeat(3, 1fr);
@@ -203,9 +203,9 @@
   #footnote {
     max-width: 100%;
   }
-}
+} */
 
-@media (max-width: 600px) {
+/* @media (max-width: 600px) {
   .invoiceheading,
   .input_loading {
     grid-template-columns: repeat(2, 1fr);
@@ -223,5 +223,5 @@
 
   #totaldetail input {
     width: 100px;
-  }
-}
+  } 
+}*/
