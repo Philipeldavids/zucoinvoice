@@ -58,22 +58,23 @@ setCountriesList(countries);
   }, []);
 
   // ✅ Map options for react-select
-  const options = countriesList.map((country) => ({
-    value: country.dial_code,
-    label: (
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <Flag
-          code={country.code}
-          style={{ width: 50, marginRight: 15, borderRadius: '3px' }}
-        />
-        {/* <span>{country.name}</span>
-        <span style={{ marginLeft: 'auto', fontWeight: 'bold' }}>
-          {country.dial_code}
-        </span> */}
-      </div>
-    ),
-    searchLabel: `${country.name} ${country.dial_code}`,
-  }));
+ const options = countriesList.map((country) => ({
+  value: country.dial_code,
+  label: (
+    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+      <Flag code={country.code} style={{ width: 50, borderRadius: "3px" }} />
+      <span>{country.name}</span>
+      <span style={{ marginLeft: "auto", fontWeight: "bold" }}>
+        {country.dial_code}
+      </span>
+    </div>
+  ),
+  icon: (
+    <Flag code={country.code} style={{ width: 30, borderRadius: "3px" }} />
+  ), // used for selectedValue
+  searchLabel: `${country.name} ${country.dial_code}`,
+}));
+
 
   const REGISTER_URL = '/api/Auth/AddUser';
    
@@ -142,11 +143,11 @@ setCountriesList(countries);
 
         <label className={styles.label}>Phone Number</label>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent:'space-between' }}>
-          <Select
+         <Select
   options={options}
   value={selectedOption}
   onChange={setSelectedOption}
-  placeholder="Select Country"
+  placeholder=" "
   isSearchable={true}
   filterOption={(option, input) =>
     option.data.searchLabel.toLowerCase().includes(input.toLowerCase())
@@ -154,65 +155,69 @@ setCountriesList(countries);
   styles={{
     container: (base) => ({
       ...base,
-      width: '150px', // ⬆️ increase width to fit flag + text
+      width: "60px",                 // SMALL compact width
     }),
     control: (base) => ({
       ...base,
-      borderColor: '#ccc',
-      borderRadius: '8px',
-      minHeight: '30px',
-      display: 'flex',
-      alignItems: 'center',
-      paddingLeft: '8px', // ⬅️ adds space for the flag
+      minHeight: "45px",
+      borderRadius: "8px",
+      borderColor: "#ccc",
+      paddingLeft: "4px",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
     }),
+
+    // 🔥 Show ONLY the flag when selected
+    singleValue: (base) => ({
+      ...base,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: 0,
+      margin: 0,
+    }),
+
     valueContainer: (base) => ({
       ...base,
-      padding: '0 8px',
-      display: 'flex',
-      width: 100,
-      alignItems: 'center',
-      gap: '8px', // ensures spacing between flag and label
+      padding: 0,
+      margin: 0,
     }),
+
+    indicatorsContainer: (base) => ({
+      ...base,
+      padding: 0,
+      margin: 0,
+    }),
+
+    dropdownIndicator: (base) => ({
+      ...base,
+      padding: 2,
+    }),
+
     menu: (base) => ({
       ...base,
       zIndex: 9999,
+      width: "250px", // Bigger dropdown area for clarity
     }),
+
+    // Dropdown item style
     option: (base, state) => ({
       ...base,
-      display: 'flex',
-      alignItems: 'center',
-      gap: '8px', // keeps flag and text aligned
-      backgroundColor: state.isFocused ? '#f1f1f1' : 'white',
-      color: 'black',
+      display: "flex",
+      alignItems: "center",
+      gap: "10px",
+      padding: "10px 12px",
+      backgroundColor: state.isFocused ? "#f1f1f1" : "white",
+      color: "black",
     }),
+    
   }}
+  formatOptionLabel={(option, { context }) =>
+    context === "value" ? option.icon : option.label
+  }
 />
 
-          {/* <Select
-            options={options}
-            value={selectedOption}
-            onChange={setSelectedOption}
-            placeholder="Select Country"
-            isSearchable={true}
-            filterOption={(option, input) =>
-              option.data.searchLabel
-                .toLowerCase()
-                .includes(input.toLowerCase())
-            }
-            styles={{
-              container: (base) => ({ ...base, width: '100px' }),
-              control: (base) => ({
-                ...base,
-                borderColor: '#ccc',
-                borderRadius: '8px',
-                minHeight: '45px',
-              }),
-              menu: (base) => ({
-                ...base,
-                zIndex: 9999,
-              }),
-            }}
-          /> */}
           <input
             type="tel"
             value={phoneNumber}
