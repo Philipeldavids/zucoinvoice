@@ -6,14 +6,26 @@ import "jspdf-autotable";
 import styles from './InvoicePage.module.css';
 import DashBoardLayout from './DashBoardLayout';
 import logo from '../assets/zucoinvoiceapplogo.png';
+import { useNavigate } from 'react-router-dom';
 
 function InvoicePage() {
 
     const { invoiceId } = useInvoice();
     const[invoice, setInvoice] = useState([]);
-    
+      const [user, setUser] = useState();
+    const navigate = useNavigate();
 
-    
+
+    useEffect(() => {
+        const loggedInUser = sessionStorage.getItem("user");
+        if (loggedInUser) {
+          const foundUser = JSON.parse(loggedInUser);
+          setUser(foundUser);          
+        }
+        else{
+            navigate("/login");
+        }
+      }, [navigate]);
     
 const generatePDF = useCallback(async () => {
   let invoic = [];
@@ -142,6 +154,7 @@ const sendInvoice = async () => {
     formData.append("file", pdfBlob, `Invoice_${invoice.invoiceNumber}.pdf`);
     formData.append("invoiceId", invoiceId);
     formData.append("email", customerEmail);
+    formData.append("businessName", user?.company);
 
     const response = await axios.post("api/v1/Invoice/SendInvoice", formData, {
       headers: { "Content-Type": "multipart/form-data" },
