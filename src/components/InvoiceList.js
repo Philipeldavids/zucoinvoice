@@ -16,6 +16,9 @@ function InvoiceList() {
   const [query, setQuery] = useState('');
   const [entriesToShow, setEntriesToShow] = useState(5);
   const [currentPage, setCurrentPage] = useState(1);
+  const [clientFilter, setClientFilter] = useState("");
+const [startDate, setStartDate] = useState("");
+const [endDate, setEndDate] = useState("");
   //const { invoiceId } = useInvoice();
   //const[invoice, setInvoice] = useState([]);
   //const [formattedValue, setFormattedValue] = useState("");
@@ -33,6 +36,60 @@ function InvoiceList() {
       getInvoice(foundUser.id);
     }
   }, []);
+
+  // Convert array to CSV
+const convertToCSV = (data) => {
+  const headers = ["Invoice Number", "Client", "Date", "Total"];
+  const rows = data.map(inv => [
+    inv.invoiceNumber,
+    inv.client,
+    inv.createdDate,
+    inv.totalPrice
+  ]);
+
+  let csvContent = headers.join(",") + "\n";
+  rows.forEach(row => {
+    csvContent += row.join(",") + "\n";
+  });
+  return csvContent;
+};
+
+const downloadCSV = () => {
+  // Start with full invoice list
+  let filtered = [...invoices];
+
+  // Filter by client name
+  if (clientFilter.trim() !== "") {
+    filtered = filtered.filter(inv =>
+      inv.client.toLowerCase().includes(clientFilter.toLowerCase())
+    );
+  }
+
+  // Filter by date range
+  if (startDate) {
+    filtered = filtered.filter(inv => new Date(inv.createdDate) >= new Date(startDate));
+  }
+  if (endDate) {
+    filtered = filtered.filter(inv => new Date(inv.createdDate) <= new Date(endDate));
+  }
+
+  if (filtered.length === 0) {
+    alert("No invoices match your filters.");
+    return;
+  }
+
+  const csv = convertToCSV(filtered);
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement("a");
+  link.href = url;
+  link.setAttribute("download", "invoices.csv");
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
 // generate pdf
 const generatePDF = useCallback(async (invoiceId) => {
 
@@ -263,7 +320,42 @@ const generatePDF = useCallback(async (invoiceId) => {
         </div>
 
         <div>
+          <div className={styles.filterRow}>
+  <div>
+    <label>Client Name</label>
+    <input
+      type="text"
+      value={clientFilter}
+      onChange={(e) => setClientFilter(e.target.value)}
+      placeholder="Filter by client"
+    />
+  </div>
+
+  <div>
+    <label>Start Date</label>
+    <input
+      type="date"
+      value={startDate}
+      onChange={(e) => setStartDate(e.target.value)}
+    />
+  </div>
+
+  <div>
+    <label>End Date</label>
+    <input
+      type="date"
+      value={endDate}
+      onChange={(e) => setEndDate(e.target.value)}
+    />
+  </div>
+
+  <button onClick={downloadCSV} className={styles.csvButton}>
+    Download CSV
+  </button>
+</div>
+
           <ul id={styles.invoicelist}>
+
             <li>Number</li>
             <li>Client</li>
             <li>Date</li>
@@ -292,7 +384,7 @@ const generatePDF = useCallback(async (invoiceId) => {
                     className={styles.addnewbtn}
                     onClick={() => generatePDF(invoice.invoiceID)}
                   >
-                    Download
+                    Download PDF
                   </button>
                 </li>
               </ul>
