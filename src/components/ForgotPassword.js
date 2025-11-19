@@ -13,7 +13,7 @@ function ForgotPassword() {
     setMessage("");
 
     try {
-      const response = await axios.post("/api/Auth/ForgotPassword", { email });
+      const response = await axios.post("api/Auth/ForgotPassword", { email });
       if (response.status === 200) {
         setMessage("Password reset link sent to your email.");
       }
