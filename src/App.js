@@ -13,6 +13,7 @@ import { InvoiceProvider } from './context/InvoiceContext';
 import InvoicePage from './components/InvoicePage';
 import SubscriptionPage from './components/Subscription';
 import ForgotPassword from './components/ForgotPassword';
+import ResetPassword from './components/ResetPassword';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
           <Route path ="/invoicepage" exact element = {<InvoicePage/>}/>
           <Route path ="/subscription" exact element = {<SubscriptionPage/>}/>
           <Route path = "/forgotpassword" exact element = {<ForgotPassword />}/>
+          <Route path = "/reset-password" exact element = {<ResetPassword />}/>
           {/* <Route path="/profile" component={Profile} /> */}
           {/* Add more routes for other pages */}
         </Routes>
