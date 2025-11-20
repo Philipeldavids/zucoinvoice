@@ -6,7 +6,7 @@ import {useNavigate} from 'react-router-dom'
 function ResetPassword() {
   const [email, setEmail] = useState("");
   const [token, setToken] = useState("");
-  const [password, setPassword] = useState("");
+  const [newpassword, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -23,7 +23,7 @@ function ResetPassword() {
     e.preventDefault();
     setMessage("");
 
-    if (password !== confirmPassword) {
+    if (newpassword !== confirmPassword) {
       setMessage("Passwords do not match.");
       return;
     }
@@ -33,7 +33,7 @@ function ResetPassword() {
       const response = await axios.post("api/Auth/ResetPassword", {
         email,
         token,
-        password
+        newpassword
       });
 
       if (response.status === 200) {
@@ -61,7 +61,7 @@ function ResetPassword() {
           <input
             type="password"
             placeholder="New password"
-            value={password}
+            value={newpassword}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
