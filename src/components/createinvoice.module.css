@@ -83,14 +83,14 @@
   grid-template-columns: repeat(6, 1fr);
   gap: 10px;
   list-style: none;
-  padding: 0;
+  padding: 0; 
   margin: 1rem 0;
   align-items: center;
 }
 
 .invoiceheading li {
   font-weight: 600;
-}
+ }
 
 .input_loading input {
   width: 100%;
@@ -185,12 +185,15 @@
 }
 
 /* Responsive adjustments */
-/* @media (max-width: 900px) {
+@media (max-width: 900px) {
   .invoiceheading,
   .input_loading {
     grid-template-columns: repeat(3, 1fr);
+    
   }
-
+.input_loading input {
+  width:100%;
+}
   .logo {
     width: 150px;
     height: 130px;
@@ -203,9 +206,9 @@
   #footnote {
     max-width: 100%;
   }
-} */
+}
 
-/* @media (max-width: 600px) {
+@media (max-width: 600px) {
   .invoiceheading,
   .input_loading {
     grid-template-columns: repeat(2, 1fr);
@@ -224,4 +227,4 @@
   #totaldetail input {
     width: 100px;
   } 
-}*/
+}
