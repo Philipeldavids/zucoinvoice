@@ -100,12 +100,19 @@ const generatePDF = useCallback(async () => {
   } else {
     formatted = "";
   }
-
+  const decodeHtml = (str) => {
+    const txt = document.createElement("textarea");
+    txt.innerHTML = str;
+    return txt.value;
+  };
   const finalY = doc.lastAutoTable.finalY + 10;
-   doc.setFont("helvetica", "normal");
+  doc.setFont("helvetica", "normal");
   doc.setFontSize(12);
   doc.text(`Tax: %${invoic.tax}`, 20, finalY); 
-  doc.text(`Total(NGN): ${formatted}`, 20, finalY + 10, { encoding: "UTF-8" });
+  doc.text(`Total(NGN): ${formatted.replace('₦','')}`, 20, finalY + 10);
+  
+  //doc.text("Total (NGN): " + invoic.totalPrice, 20, finalY + 10);
+  
   //doc.text(`Total: ${formatted}`, 20, finalY + 10);
 
   // Footer
