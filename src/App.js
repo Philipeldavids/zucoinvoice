@@ -8,7 +8,7 @@ import Dashboard from './components/Dashboard';
 import Createinvoice from './components/createinvoice';
 import InvoiceList from './components/InvoiceList';
 import Contact from './components/Contact';
-import Settings from './components/Settings';
+import Settings from './components/CompanyProfile';
 import { InvoiceProvider } from './context/InvoiceContext';
 import InvoicePage from './components/InvoicePage';
 import SubscriptionPage from './components/Subscription';

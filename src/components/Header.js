@@ -8,6 +8,8 @@ import Select from '@mui/material/Select';
 function Header() {
 
   const [user, setUser] = useState();
+  const [action, setAction] = useState("");
+  
  const navigate = useNavigate();
   useEffect(() => {
     const loggedInUser = sessionStorage.getItem("user");
@@ -27,10 +29,17 @@ function Header() {
     <div className={styles.headerapp}>      
     <img id={styles.image1} src={Image} alt='notification'/>
     <nav className={styles.user}>
-    <Select>
-    {/* <img id='image2' src ={Image2} alt ='user'/>  */}
-          <MenuItem value="logout" onClick= {handleLogout}>LOGOUT</MenuItem>
-      </Select>
+  <Select
+  value={action}
+  onChange={(e) => {
+    if (e.target.value === "logout") {
+      handleLogout();
+    }
+    setAction("");
+  }}
+>
+  <MenuItem value="logout">Logout</MenuItem>
+</Select>
     <p>{user?.email}</p>
     </nav>
     </div>

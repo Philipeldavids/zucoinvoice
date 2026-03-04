@@ -59,9 +59,11 @@ function CreateInvoice() {
 
   useEffect(() => {
   const savedLogo = localStorage.getItem(LOGO_STORAGE_KEY);
-  if (savedLogo) {
-    setPreview(savedLogo);
-  }
+
+ if (savedLogo) {    
+    setPreview(savedLogo);    
+  };
+  
 }, []);
 
   const handleClose = () => setShow(false);
@@ -217,7 +219,9 @@ function CreateInvoice() {
 
     setLoading(true); // ✅ Show spinner
     const formData = new FormData();
-    formData.append('image', selectedFile);
+    if (selectedFile) {
+  formData.append('image', selectedFile);
+} 
     formData.append('invoiceNumber', invoiceno);
     formData.append('contactName', contact);
     formData.append('tax', tax);
@@ -233,6 +237,7 @@ function CreateInvoice() {
 
       if (response.status === 200 || response.status === 201) {
         setInvoiceId(response.data.invoiceID);
+        //localStorage.setItem(LOGO_STORAGE_KEY, response.data.imageURl);
         setPreview(response.data.imageURl);
         alert('Invoice Creation Successful');
         navigate("/invoicepage");

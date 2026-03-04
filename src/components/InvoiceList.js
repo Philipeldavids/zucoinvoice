@@ -106,6 +106,20 @@ const generatePDF = useCallback(async (invoiceId) => {
         console.warn("Could not fetch subscription status, assuming free tier.");
       };
 
+        // Fetch company settings
+      let company = null;
+      try {
+       const token = user?.token; // or localStorage
+        
+              const companyRes = await axios.get("api/v1/settings/getcompany", {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+               });
+        company = companyRes.data;
+      } catch (err) {
+        console.warn("Could not load company settings");
+      }
   try {
     const res = await axios.get(`api/v1/Invoice/GetInvoiceById/${invoiceId}`);
     if (res.status !== 200) {
@@ -117,18 +131,24 @@ const generatePDF = useCallback(async (invoiceId) => {
     const doc = new jsPDF();
 
     // Add image (invoice logo if available)
-    if (invoic.imageURl) {
-      const imgRes = await fetch(invoic.imageURl);
-      const blob = await imgRes.blob();
-      const base64data = await new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result);
-        reader.onerror = reject;
-        reader.readAsDataURL(blob);
-      });
-       doc.addImage(base64data, "PNG", 150, 10, 50, 50);
-       
-    }
+
+    
+    try {
+  if (company.logoUrl) {
+    const response = await fetch(company.logoUrl);
+    const blob = await response.blob();
+    const base64data = await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+
+    doc.addImage(base64data, "PNG", 150, 10, 50, 50);
+  }
+} catch (err) {
+  console.warn("Logo could not be loaded");
+}
 
     // Title
     doc.setFontSize(18);
@@ -166,8 +186,20 @@ const generatePDF = useCallback(async (invoiceId) => {
     doc.setFont("helvetica", "normal");
   doc.setFontSize(12);
   doc.text(`Tax: %${invoic.tax}`, 20, finalY); 
-  doc.text(`Total(NGN): ${formattedTotal}`, 20, finalY + 10, { encoding: "UTF-8" });
+  doc.text(`Total(NGN): ${formattedTotal.replace('₦','')}`, 20, finalY + 10, { encoding: "UTF-8" });
 
+  // Company Info (Below Table)
+if (company) {
+  doc.setFontSize(10);
+  doc.setTextColor(60);
+
+ doc.text("Business Details", 20, finalY + 50);
+  doc.text(`Company: ${company.companyName || ""}`, 20, finalY + 58);
+  doc.text(`Address: ${company.address || ""}`, 20, finalY + 66);
+  doc.text(`Phone: ${company.phoneNumber || ""}`, 20, finalY + 74);
+  doc.text(`Email: ${company.email || ""}`, 20, finalY + 82);
+  doc.text(`Website: ${company.website || ""}`, 20, finalY + 90);
+}
     // Footer
     doc.setFontSize(10);
     doc.text(invoic.footNote || "Thank you for your business!", 20, finalY + 30);
@@ -201,7 +233,7 @@ const generatePDF = useCallback(async (invoiceId) => {
   } catch (error) {
     console.error("Error generating PDF:", error);
   }
-}, []);
+}, [user]);
  
  
 

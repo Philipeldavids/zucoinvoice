@@ -49,11 +49,27 @@ const generatePDF = useCallback(async () => {
     console.warn("Could not fetch subscription status, assuming free tier.");
   }
 
-  const doc = new jsPDF();
 
+  // Fetch company settings
+let company = null;
+try {
+ const token = user?.token; // or localStorage
+ 
+       const companyRes = await axios.get("api/v1/settings/getcompany", {
+         headers: {
+           Authorization: `Bearer ${token}`,
+         },
+        });
+  company = companyRes.data;
+} catch (err) {
+  console.warn("Could not load company settings");
+}
+  const doc = new jsPDF();
+console.log(company);
   // Add image
-  if (invoic.imageURl) {
-    const response = await fetch(invoic.imageURl);
+  try {
+  if (company.logoUrl) {
+    const response = await fetch(company.logoUrl);
     const blob = await response.blob();
     const base64data = await new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -61,8 +77,12 @@ const generatePDF = useCallback(async () => {
       reader.onerror = reject;
       reader.readAsDataURL(blob);
     });
+
     doc.addImage(base64data, "PNG", 150, 10, 50, 50);
   }
+} catch (err) {
+  console.warn("Logo could not be loaded");
+}
 
   // Title
   doc.setFontSize(18);
@@ -100,21 +120,26 @@ const generatePDF = useCallback(async () => {
   } else {
     formatted = "";
   }
-  const decodeHtml = (str) => {
-    const txt = document.createElement("textarea");
-    txt.innerHTML = str;
-    return txt.value;
-  };
+  
   const finalY = doc.lastAutoTable.finalY + 10;
   doc.setFont("helvetica", "normal");
   doc.setFontSize(12);
   doc.text(`Tax: %${invoic.tax}`, 20, finalY); 
   doc.text(`Total(NGN): ${formatted.replace('₦','')}`, 20, finalY + 10);
   
-  //doc.text("Total (NGN): " + invoic.totalPrice, 20, finalY + 10);
-  
-  //doc.text(`Total: ${formatted}`, 20, finalY + 10);
+  // Company Info (Below Table)
+if (company) {
+  doc.setFontSize(10);
+  doc.setTextColor(60);
 
+  doc.text("Business Details", 20, finalY + 50);
+  doc.text(`Company: ${company.companyName || ""}`, 20, finalY + 58);
+  doc.text(`Address: ${company.address || ""}`, 20, finalY + 66);
+  doc.text(`Phone: ${company.phoneNumber || ""}`, 20, finalY + 74);
+  doc.text(`Email: ${company.email || ""}`, 20, finalY + 82);
+  doc.text(`Website: ${company.website || ""}`, 20, finalY + 90);
+}
+  
   // Footer
   doc.setFontSize(10);
   doc.text(invoic.footNote || "Thank you for your business!", 20, finalY + 30);
@@ -142,7 +167,7 @@ const generatePDF = useCallback(async () => {
   const pdfBlob = new Blob([pdfData], { type: "application/pdf" });
 
   return pdfBlob;
-}, [invoiceId]);
+}, [invoiceId, user]);
 
       useEffect(()=>{
         generatePDF();
