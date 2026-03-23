@@ -43,7 +43,7 @@ function CreateInvoice() {
 
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
-  const LOGO_STORAGE_KEY = "invoice_logo_preview";
+  //const LOGO_STORAGE_KEY = "invoice_logo_preview";
 
   useEffect(() => {
     const loggedInUser = sessionStorage.getItem("user");
@@ -58,13 +58,15 @@ function CreateInvoice() {
   }, [navigate]);
 
   useEffect(() => {
-  const savedLogo = localStorage.getItem(LOGO_STORAGE_KEY);
+  if (!user?.id) return;
 
- if (savedLogo) {    
-    setPreview(savedLogo);    
-  };
-  
-}, []);
+  const key = `invoice_logo_preview_${user.id}`;
+  const savedLogo = localStorage.getItem(key);
+
+  if (savedLogo) {
+    setPreview(savedLogo);
+  }
+}, [user]);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -178,8 +180,13 @@ function CreateInvoice() {
   const reader = new FileReader();
   reader.onloadend = () => {
     const base64Image = reader.result;
-    setPreview(base64Image);
-    localStorage.setItem(LOGO_STORAGE_KEY, base64Image); // ✅ Persist logo
+
+  //    const previewUrl = URL.createObjectURL(file);
+  // setPreview(previewUrl);
+   setPreview(base64Image);
+
+    const key = `invoice_logo_preview_${user?.id}`;
+    localStorage.setItem(key, base64Image); // ✅ user-specific
   };
 
   reader.readAsDataURL(file);
@@ -238,7 +245,13 @@ function CreateInvoice() {
       if (response.status === 200 || response.status === 201) {
         setInvoiceId(response.data.invoiceID);
         //localStorage.setItem(LOGO_STORAGE_KEY, response.data.imageURl);
-        setPreview(response.data.imageURl);
+        const imageUrl = response.data.imageUrl;
+
+        const key = `invoice_logo_preview_${user?.id}`;
+
+        localStorage.setItem(key, imageUrl);   // ✅ small + safe
+        setPreview(imageUrl);        
+       // setPreview(response.data.imageURl);
         alert('Invoice Creation Successful');
         navigate("/invoicepage");
       } else {
