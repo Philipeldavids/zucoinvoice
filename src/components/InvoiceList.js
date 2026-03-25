@@ -98,28 +98,21 @@ const generatePDF = useCallback(async (invoiceId) => {
     // Fetch subscription status (to know if user is subscribed)
       try {
         const user = JSON.parse(sessionStorage.getItem("user"));
+        const token = user?.token;
+         
+               if (!token) return;
+         
         if (user?.id) {
-          const subRes = await axios.get(`api/v1/subscription/current/${user.id}`);
+          const subRes = await axios.get(`api/v1/subscription/current/${user?.id}`, {
+                 headers: { Authorization: `Bearer ${token}` }
+               });
           subscriptionStatus = subRes.data?.hasActiveSubscription || false;
         }
       } catch (err) {
         console.warn("Could not fetch subscription status, assuming free tier.");
       };
 
-        // Fetch company settings
-      let company = null;
-      try {
-       const token = user?.token; // or localStorage
         
-              const companyRes = await axios.get("api/v1/settings/getcompany", {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-               });
-        company = companyRes.data;
-      } catch (err) {
-        console.warn("Could not load company settings");
-      }
   try {
     const res = await axios.get(`api/v1/Invoice/GetInvoiceById/${invoiceId}`);
     if (res.status !== 200) {
@@ -128,6 +121,20 @@ const generatePDF = useCallback(async (invoiceId) => {
     }
 
     invoic = res.data;
+let company = null;
+try {
+ const token = user?.token; // or localStorage
+ 
+       const companyRes = await axios.get("api/v1/settings/getcompany", {
+         headers: {
+           Authorization: `Bearer ${token}`,
+         },
+        });
+  company = companyRes.data;
+} catch (err) {
+  console.warn("Could not load company settings");
+}
+    
     const doc = new jsPDF();
 
     // Add image (invoice logo if available)
@@ -205,7 +212,7 @@ if (company) {
     doc.text(invoic.footNote || "Thank you for your business!", 20, finalY + 30);
 
     // Add logo
-    if (!subscriptionStatus && logo) {
+    if (!subscriptionStatus) {
         const response = await fetch(logo);
         const blob2 = await response.blob();
         const base64Logo = await new Promise((resolve, reject) => {

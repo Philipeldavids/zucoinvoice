@@ -14,38 +14,42 @@ export default function CompanyProfile() {
     logoUrl: ""
   });
 
+  
   //const [user, setUser] = useState();
  const navigate = useNavigate();
+ 
+useEffect(() => {
+  const fetchCompany = async () => {
+    try {
+      const storedUser = JSON.parse(sessionStorage.getItem("user"));
+      const token = storedUser?.token;
 
-  useEffect(() => {
-      const fetchCompany = async () => {
-  try {
-    const storedUser = JSON.parse(sessionStorage.getItem("user"));
-    const token = storedUser?.token;
+     
 
-    if (!token) {
-      navigate("/login");
-      return;
+      // ✅ Valid token → proceed
+      const res = await axios.get("api/v1/settings/getcompany", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (res.data) 
+        setForm(res.data);
+      localStorage.setItem("company", JSON.stringify(res.data));
+
+    } catch (err) {
+      console.error("Failed to load company settings", err);
+
+      // 🔥 Fallback for expired/invalid token from backend
+      // if (err.response?.status === 401) {
+      //   sessionStorage.clear();
+      //   navigate("/login");
+      // }
     }
+  };
 
-    const res = await axios.get("api/v1/settings/getcompany", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    setForm(res.data);
-  } catch (err) {
-    console.error("401 or token issue:", err.response?.status);
-    if (err.response?.status === 401) {
-      navigate("/login");
-    }
-  }
-
-      };
   fetchCompany();
-      
-    }, [navigate]);
+}, [navigate]);
   
 //  useEffect(() => {
    

@@ -41,8 +41,13 @@ const generatePDF = useCallback(async () => {
   // Fetch subscription status (to know if user is subscribed)
   try {
     const user = JSON.parse(sessionStorage.getItem("user"));
-    if (user?.id) {
-      const subRes = await axios.get(`api/v1/subscription/current/${user.id}`);
+    const token = user?.token;
+         
+               if (!token) return;
+     if (user?.id) {
+              const subRes = await axios.get(`api/v1/subscription/current/${user?.id}`, {
+                     headers: { Authorization: `Bearer ${token}` }
+                   });
       subscriptionStatus = subRes.data?.hasActiveSubscription || false;
     }
   } catch (err) {
@@ -50,7 +55,7 @@ const generatePDF = useCallback(async () => {
   }
 
 
-  // Fetch company settings
+ // Fetch company settings
 let company = null;
 try {
  const token = user?.token; // or localStorage

@@ -35,8 +35,16 @@ useEffect(() => {
     console.log("Fetching subscription for user:", user?.id);
 
     try {
-      const res = await axios.get(`api/v1/Subscription/current/${user?.id}`);
-      setSubscription(res.data);
+       const storedUser = JSON.parse(sessionStorage.getItem("user"));
+            const token = storedUser?.token;
+      
+            if (!token) return;
+      
+            // Get subscription
+            const subRes = await axios.get(`api/v1/subscription/current/${user?.id}`, {
+              headers: { Authorization: `Bearer ${token}` }
+            });
+      setSubscription(subRes.data);
     } catch (err) {
       console.error("Failed to fetch subscription:", err.response?.data || err.message);
       setSubscription(null);
@@ -60,8 +68,16 @@ useEffect(() => {
       setMessage(res.data.message || "Payment verified successfully!");
       setSelectedPlan(null);
       // Refresh subscription info
-      const refreshed = await axios.get(`api/v1/Subscription/current/${user?.id}`);
-      setSubscription(refreshed.data);
+       const storedUser = JSON.parse(sessionStorage.getItem("user"));
+            const token = storedUser?.token;
+      
+            if (!token) return;
+      
+            // Get subscription
+            const subRes = await axios.get(`api/v1/subscription/current/${user?.id}`, {
+              headers: { Authorization: `Bearer ${token}` }
+            });
+      setSubscription(subRes.data);
     } catch (err) {
       console.log(err);
       setMessage("Error verifying payment");

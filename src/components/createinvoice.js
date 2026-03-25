@@ -35,6 +35,8 @@ function CreateInvoice() {
   const [email, setEmail] = useState('');
   const [address, setAddress] = useState('');
   const [phonenumber, setPhoneNumber] = useState('');
+  const [showLimitModal, setShowLimitModal] = useState(false);
+  const [usage, setUsage] = useState({ used: 0, limit: 5 });
 
   const ADDCONTACT_URL = "api/v1/Contact/AddContact";
   const GETCONTACTS_URL = "api/v1/Contact/GetContactByUser/";
@@ -56,6 +58,43 @@ function CreateInvoice() {
         navigate("/login");
     }
   }, [navigate]);
+   useEffect(() => {
+    const checkSubscription = async () => {
+      try {
+        const storedUser = JSON.parse(sessionStorage.getItem("user"));
+        const token = storedUser?.token;
+  
+        if (!token) return;
+  
+        // Get subscription
+        const subRes = await axios.get(`api/v1/subscription/current/${storedUser.id}`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+  
+        const hasSubscription = subRes.data?.hasActiveSubscription;
+  
+        // Get invoice usage
+        // const usageRes = await axios.get(`api/v1/invoice/usage/${storedUser.id}`, {
+        //   headers: { Authorization: `Bearer ${token}` }
+        // });
+  
+        const used = subRes.data?.invoicesUsed || 0;
+        const limit = subRes.data?.freeLimit || 5;
+  
+        setUsage({ used, limit });
+  
+        // 🚨 Show modal if limit reached and no subscription
+        if (!hasSubscription && used >= limit) {
+          setShowLimitModal(true);
+        }
+  
+      } catch (err) {
+        console.error("Subscription check failed", err);
+      }
+    };
+  
+    checkSubscription();
+  }, []);
 
   useEffect(() => {
   if (!user?.id) return;
@@ -245,7 +284,7 @@ function CreateInvoice() {
       if (response.status === 200 || response.status === 201) {
         setInvoiceId(response.data.invoiceID);
         //localStorage.setItem(LOGO_STORAGE_KEY, response.data.imageURl);
-        const imageUrl = response.data.imageUrl;
+        const imageUrl = response.data.imageURl;
 
         const key = `invoice_logo_preview_${user?.id}`;
 
@@ -359,7 +398,30 @@ function CreateInvoice() {
           </div>
         </form>
       </div>
-
+      <Modal show={showLimitModal} backdrop="static"  centered>
+        <Modal.Header>
+          <Modal.Title>Free Limit Reached</Modal.Title>
+        </Modal.Header>
+      
+        <Modal.Body>
+          <p>
+            You have used <strong>{usage.used}/{usage.limit}</strong> free invoices.
+          </p>
+          <p>
+            Your free trial has ended. Please subscribe to continue generating invoices.
+          </p>
+        </Modal.Body>
+      
+        <Modal.Footer>
+          {/* <Button variant="secondary" onClick={() => setShowLimitModal(false)}>
+            Maybe Later
+          </Button> */}
+          <Button variant="primary" onClick={() => navigate("/subscription")}>
+            Subscribe Now
+          </Button>
+        </Modal.Footer>
+      </Modal>
+             
       <Modal show={show} onHide={handleClose}>
                     <Modal.Header closeButton>
                     <Modal.Title>Add A Contact Detail</Modal.Title>
