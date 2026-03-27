@@ -28,6 +28,7 @@ function CreateInvoice() {
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false); // ✅ Loading spinner state
   const { setInvoiceId } = useInvoice();
+  const [taxdiff, setTaxDiff] = useState('');
 
   const [show, setShow] = useState(false);
   const [user, setUser] = useState();
@@ -140,14 +141,17 @@ function CreateInvoice() {
 
   let taxx = 0;
   let total = 0;
+  let taxdiff = 0;
 
   if (tax !== '' && !isNaN(tax)) {
     taxx = (parseFloat(tax) / 100) * subTota;
     total = subTota + taxx;
+    taxdiff = total - subTota;
   } else {
     total = subTota;
   }
-
+  
+  setTaxDiff(taxdiff.toFixed(2));
   setTotal(total.toFixed(2));
 }, [items, tax]);
 
@@ -384,8 +388,9 @@ function CreateInvoice() {
         <span>SubTotal:</span><input type='text' value={subTotal}></input>
         <div id={styles.taxdetail}>
         <span>Tax(%):</span><input type='number' style={{ borderWidth: 1 }} value={tax} onChange={(e)=> setTax(e.target.value)}></input>
+        <div> ₦:<span>{taxdiff}</span> </div>
         </div>
-        <span id={styles.total}>TOTAL:</span><input type='text'value={Total} ></input>
+        <span id={styles.total}>TOTAL(₦):</span><input type='text'value={Total} ></input>
         
     </div>
     <div>
