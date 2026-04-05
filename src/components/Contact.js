@@ -9,9 +9,10 @@ import EditIcon from "../assets/edit-button-svgrepo-com.svg";
 
 function Contact() {
   const [name, setName] = useState("");
+  const [newTin, setNewTin] = useState(''); // modal input
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
-  const [phonenumber, setPhoneNumber] = useState("");
+  const [phonenumber, setPhoneNumber] = useState(""); 
   const [show, setShow] = useState(false);
   const [user, setUser] = useState();
   const [contacts, setContacts] = useState([]);
@@ -23,6 +24,7 @@ const [selectedContact, setSelectedContact] = useState({
   customerName: "",
   customerEmail: "",
   customerAddress: "",
+  customerTin: "",
   customerPhoneNumber: "",
   userId: "",
 });
@@ -102,6 +104,7 @@ const handleSaveEdit = async () => {
           customerEmail: email,
           customerAddress: address,
           customerPhoneNumber: phonenumber,
+          customerTin : newTin,
           userId: user?.id,
         },
         {
@@ -198,6 +201,7 @@ const handleSaveEdit = async () => {
   <ul className={styles.invoicelist}>
     <li>Name</li>
     <li>Email</li>
+    <li>Tin</li>
     <li>Address</li>
     <li>PhoneNumber</li>
     <li>Action</li>
@@ -207,6 +211,7 @@ const handleSaveEdit = async () => {
     <ul key={contact.contactId} className={styles.invoicelistitem}>
       <li>{contact.customerName}</li>
       <li>{contact.customerEmail}</li>
+      <li>{contact.customerTin}</li>
       <li>{contact.customerAddress}</li>
       <li>{contact.customerPhoneNumber}</li>
       <li style={{ display: "flex", gap: "5px" }}>
@@ -298,7 +303,13 @@ const handleSaveEdit = async () => {
           value={selectedContact.customerPhoneNumber}
           onChange={handleEditChange}
         />
-
+<label>Tin:</label>
+        <input
+          type="text"
+          name="customerTin"
+          value={selectedContact.customerTin}
+          onChange={handleEditChange}
+        />
         <div className={styles.modalActions}>
           <button onClick={handleSaveEdit}>Save</button>
           <button onClick={() => setIsEditModalOpen(false)}>Cancel</button>
@@ -343,6 +354,13 @@ const handleSaveEdit = async () => {
                 onChange={(e) => setPhoneNumber(e.target.value)}
                 placeholder="PhoneNumber"
                 value={phonenumber}
+              />
+              <Modal.Title>Tin:</Modal.Title>
+              <input
+                type="text"
+                onChange={(e) => setNewTin(e.target.value)}
+                placeholder="Tin"
+                value={newTin}
               />
             </div>
           </Modal.Body>

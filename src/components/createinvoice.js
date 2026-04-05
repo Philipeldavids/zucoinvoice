@@ -10,6 +10,8 @@ import { useInvoice } from "../context/InvoiceContext";
 import { Modal, Button, Spinner } from 'react-bootstrap';
 
 function CreateInvoice() {
+  const [tin, setTin] = useState('');
+  const [newTin, setNewTin] = useState(''); // modal input
   const [invoiceno, setInvoiceno] = useState('');
   const [contact, setContact] = useState('');
   const [description, setDescription] = useState('');
@@ -42,7 +44,7 @@ function CreateInvoice() {
   const ADDCONTACT_URL = "api/v1/Contact/AddContact";
   const GETCONTACTS_URL = "api/v1/Contact/GetContactByUser/";
   const GETINVNUMBER_URL = "api/v1/Invoice/GetInvoiceNumber";
-  const CREATE_URL = 'api/v1/Invoice/Create';
+  const CREATE_URL = "api/v1/Invoice/Create";
 
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
@@ -55,6 +57,7 @@ function CreateInvoice() {
       setUser(foundUser);
       getContact(foundUser?.id);
       getInvoiceNumber();
+      
     } else{
         navigate("/login");
     }
@@ -120,6 +123,7 @@ function CreateInvoice() {
           customerEmail: email,
           customerAddress: address,
           customerPhoneNumber: phonenumber,
+          customerTin: newTin,
           userId: user?.id,
         },
         { headers: { "Content-Type": "application/json" } }
@@ -154,12 +158,24 @@ function CreateInvoice() {
   setTaxDiff(taxdiff.toFixed(2));
   setTotal(total.toFixed(2));
 }, [items, tax]);
+   
+const getClientTin = (e) => {
+  const selectedId = e.target.value;
+ 
+  setContact(selectedId);
+
+  const selectedContact = contacts.find(
+    (c) => c.customerName === selectedId
+  );
+  
+  setTin(selectedContact?.customerTin || "");
+};
 
   const getInvoiceNumber = async () => {
     try {
       const response = await axios.get(GETINVNUMBER_URL);
       if (response.status === 200) {
-        const prefix = "#INV";
+        const prefix = "INV";
         const invNo = response.data + 1;
         setInvoiceno(prefix + invNo);
       }
@@ -173,6 +189,8 @@ function CreateInvoice() {
       const response = await axios.get(GETCONTACTS_URL + userId);
       if (response.status === 200) {
         setContacts(response.data);
+        console.log(response.data);
+        
       }
     } catch (error) {
       console.log("error:", error);
@@ -245,6 +263,7 @@ function CreateInvoice() {
   const handleDiscard = () => {
     // ✅ Reset all invoice fields and states
     setContact('');
+    setTin('');
     setDescription('');
     setQuantity('');
     setPrice('');
@@ -269,17 +288,21 @@ function CreateInvoice() {
 
     setLoading(true); // ✅ Show spinner
     const formData = new FormData();
-    if (selectedFile) {
+    if (selectedFile instanceof File) {
   formData.append('image', selectedFile);
 } 
     formData.append('invoiceNumber', invoiceno);
     formData.append('contactName', contact);
-    formData.append('tax', tax);
+    formData.append('clientTin', tin);
+    formData.append('subTotal', parseFloat(subTotal) || 0);
+    formData.append('tax', tax ? parseInt(tax) : 0);
     formData.append('footNote', footnote);
-    formData.append('totalPrice', Total);
+    formData.append('totalPrice', parseFloat(Total) || 0);
     formData.append('items', JSON.stringify(items));
     formData.append('userId', user?.id);
-
+for (let pair of formData.entries()) {
+  console.log(pair[0], pair[1]);
+}
     try {
       const response = await axios.post(CREATE_URL, formData, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -329,13 +352,24 @@ function CreateInvoice() {
         <p>TO:</p>
         <p onClick={handleShow} className={styles.buttonEdit} style={{ cursor: 'pointer'}}>Add Contact</p>
     </div>
-    <select value={contact} onChange={(e)=>setContact(e.target.value)} type='text' id={styles.contact}>
-        <option>select contact</option>
-        {contacts.map((contact) => (
-            <option key={contact.contactId}>{contact.customerName}</option>
-        ))}
-        
-    </select>
+<select
+  value={contact}
+  onChange={getClientTin}
+  className={styles.contact}
+>
+  <option>select contact</option>
+
+  {contacts.map((c) => (
+    <option key={c.contactId}>
+      {c.customerName}
+    </option>
+    
+  ))}
+</select>
+
+<div>TIN: {tin || ""}</div>
+  
+
     <br/><br/>
 
     
@@ -385,12 +419,12 @@ function CreateInvoice() {
         </div>
     
     <div id={styles.totaldetail}>
-        <span>SubTotal:</span><input type='text' value={subTotal}></input>
+        <span>SubTotal:</span><input type='text' value={subTotal} readOnly></input>
         <div id={styles.taxdetail}>
         <span>Tax(%):</span><input type='number' style={{ borderWidth: 1 }} value={tax} onChange={(e)=> setTax(e.target.value)}></input>
         <div> ₦:<span>{taxdiff}</span> </div>
         </div>
-        <span id={styles.total}>TOTAL(₦):</span><input type='text'value={Total} ></input>
+        <span id={styles.total}>TOTAL(₦):</span><input type='text'value={Total} readOnly></input>
         
     </div>
     <div>
@@ -442,6 +476,13 @@ function CreateInvoice() {
                         <input type="text" onChange={(e)=> setAddress(e.target.value)} placeholder='Address' value={address}></input><br/>
                         <Modal.Title>PhoneNumber</Modal.Title><br/>
                         <input type="text" onChange={(e)=> setPhoneNumber(e.target.value)} placeholder='PhoneNumber' value={phonenumber}></input>
+                        <Modal.Title>Tin:</Modal.Title><br/>
+                        <input
+                              type="text"
+                              onChange={(e)=> setNewTin(e.target.value)}
+                              placeholder='Tin'
+                              value={newTin}
+                            />
                     </div>
                 
                 </Modal.Body>

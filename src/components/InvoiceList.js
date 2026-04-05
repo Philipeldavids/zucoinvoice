@@ -9,6 +9,7 @@ import Image from '../assets/Frame.png';
 import logo from '../assets/zucoinvoiceapplogo.png';
 
 function InvoiceList() {
+  //const [Tin, setTin] = useState([]);
   const [show, setShow] = useState(false);
   const [invoices, setInvoices] = useState([]);
   const [results, setResults] = useState([]);
@@ -26,6 +27,7 @@ const [endDate, setEndDate] = useState("");
   const SEARCH_URL = 'api/v1/Invoice/search/';
   const GETINVOICE_URL = 'api/v1/Invoice/GetInvoiceByUser/';
   const DELETE_URL = 'api/v1/Invoice/DeleteInvoice/';
+  
   //const DOWNLOAD_URL = 'api/v1/Invoice/DownloadInvoice/';
 
   useEffect(() => {
@@ -34,17 +36,21 @@ const [endDate, setEndDate] = useState("");
       const foundUser = JSON.parse(loggedInUser);
       setUser(foundUser);
       getInvoice(foundUser.id);
+     
     }
   }, []);
 
   // Convert array to CSV
 const convertToCSV = (data) => {
-  const headers = ["Invoice Number", "Client", "Date", "Total"];
+  const headers = ["Invoice Number", "Client", "Tin", "Date", "Total", "Tax", "TotalTaxInclusive"];
   const rows = data.map(inv => [
     inv.invoiceNumber,
     inv.client,
+    inv.clientTin,
     inv.createdDate,
-    inv.totalPrice
+    inv.subTotal,
+    inv.tax,
+    inv.totalTaxInclusive
   ]);
 
   let csvContent = headers.join(",") + "\n";
@@ -57,7 +63,7 @@ const convertToCSV = (data) => {
 const downloadCSV = () => {
   // Start with full invoice list
   let filtered = [...invoices];
-
+  
   // Filter by client name
   if (clientFilter.trim() !== "") {
     filtered = filtered.filter(inv =>
@@ -259,11 +265,15 @@ if (company) {
 //     document.body.removeChild(link);
 //   };
 
-  const getInvoice = async (userId) => {
+
+
+  
+const getInvoice = async (userId) => {
     try {
       const response = await axios.get(GETINVOICE_URL + userId);
       if (response.status === 200) {
-        setInvoices(response.data);
+        setInvoices(response.data);        
+        
       } else {
         alert('Error fetching invoices');
       }
@@ -410,7 +420,7 @@ if (company) {
                 <li>{invoice.invoiceNumber}</li>
                 <li>{invoice.client}</li>
                 <li>{invoice.createdDate}</li>
-                <li>{invoice.totalPrice}</li>
+                <li>{invoice.totalTaxInclusive}</li>
                 <li className={styles.action}>
                   <img
                     src={Image}
