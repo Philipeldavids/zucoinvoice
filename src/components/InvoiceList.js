@@ -192,7 +192,7 @@ try {
       style: "currency",
       currency: "NGN",
       minimumFractionDigits: 2,
-    }).format(invoic.totalPrice || 0);
+    }).format(invoic.totalTaxInclusive || 0);
 
     console.log(formattedTotal);
     const finalY = doc.lastAutoTable.finalY + 10;

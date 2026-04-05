@@ -115,12 +115,12 @@ console.log(company);
 
   // Total and tax
   let formatted = "";
-  if (!isNaN(invoic.totalPrice)) {
+  if (!isNaN(invoic.totalTaxInclusive)) {
     formatted = new Intl.NumberFormat("en-NG", {
       style: "currency",
       currency: "NGN",
       minimumFractionDigits: 2,
-    }).format(invoic.totalPrice);
+    }).format(invoic.totalTaxInclusive);
     console.log(formatted);
   } else {
     formatted = "";
