@@ -96,7 +96,7 @@ console.log(company);
 
   // Invoice details
   doc.setFontSize(12);
-  doc.text(`Invoice Number: #INV${invoic.invoiceNumber}`, 20, 40);
+  doc.text(`Invoice Number: INV${invoic.invoiceNumber}`, 20, 40);
   doc.text(`Contact Name: ${invoic.client}`, 20, 50);
   doc.text(`Created Date: ${invoic.createdDate}`, 20, 60);
 
