@@ -166,10 +166,19 @@ const qrData = `Invoice: ${invoic.invoiceNumber}
 Total: ${invoic.totalTaxInclusive}
 Client: ${invoic.client}`;
 
-const qrImage = await QRCode.toDataURL(qrData);
+let qrImage = "";
+try {
+  qrImage = await QRCode.toDataURL(qrData, {
+    errorCorrectionLevel: "H",
+    width: 200,
+  });
+} catch (err) {
+  console.error("QR generation failed:", err);
+}
 
-// ✅ Add to PDF
-doc.addImage(qrImage, "PNG", 150, finalY + 20, 40, 40);
+if (qrImage) {
+  doc.addImage(qrImage, "PNG", 150, finalY + 20, 40, 40);
+}
     // Watermark / logo at bottom
     doc.addImage(base64data2, "PNG", 80, 200, 50, 50);
     doc.setTextColor(150);
