@@ -7,6 +7,7 @@ import styles from './InvoicePage.module.css';
 import DashBoardLayout from './DashBoardLayout';
 import logo from '../assets/zucoinvoiceapplogo.png';
 import { useNavigate } from 'react-router-dom';
+import QRCode from 'qrcode';
 
 function InvoicePage() {
 
@@ -160,6 +161,15 @@ if (company) {
       reader.readAsDataURL(blob2);
     });
 
+    // ✅ Generate QR Code
+const qrData = `Invoice: ${invoic.invoiceNumber}
+Total: ${invoic.totalTaxInclusive}
+Client: ${invoic.client}`;
+
+const qrImage = await QRCode.toDataURL(qrData);
+
+// ✅ Add to PDF
+doc.addImage(qrImage, "PNG", 150, finalY + 20, 40, 40);
     // Watermark / logo at bottom
     doc.addImage(base64data2, "PNG", 80, 200, 50, 50);
     doc.setTextColor(150);

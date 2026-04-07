@@ -16,7 +16,7 @@ function ResetPassword() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     setEmail(params.get("email") || "");
-    setToken(decodeURIComponent(params.get("token") || ""));
+    setToken(params.get("token") || "");
   }, []);
 
   const handleResetPassword = async (e) => {

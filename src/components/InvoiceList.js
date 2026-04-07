@@ -7,6 +7,7 @@ import { NavLink } from 'react-router-dom';
 import axios from '../api/axios';
 import Image from '../assets/Frame.png';
 import logo from '../assets/zucoinvoiceapplogo.png';
+import QRCode from 'qrcode';
 
 function InvoiceList() {
   //const [Tin, setTin] = useState([]);
@@ -216,7 +217,14 @@ if (company) {
     // Footer
     doc.setFontSize(10);
     doc.text(invoic.footNote || "Thank you for your business!", 20, finalY + 30);
+const qrData = `Invoice: ${invoic.invoiceNumber}
+Total: ${invoic.totalTaxInclusive}
+Client: ${invoic.client}`;
 
+const qrImage = await QRCode.toDataURL(qrData);
+
+// ✅ Add to PDF
+doc.addImage(qrImage, "PNG", 150, finalY + 20, 40, 40);
     // Add logo
     if (!subscriptionStatus) {
         const response = await fetch(logo);
