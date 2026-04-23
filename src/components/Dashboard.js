@@ -1,20 +1,60 @@
 import React, { useEffect, useState } from 'react'
 import DashBoardLayout from './DashBoardLayout'
 import styles from './Home.module.css';
-import Image1 from '../assets/image 1.png';
+//import Image1 from '../assets/image 1.png';
 import { useLocation } from 'react-router-dom';
 import axios from '../api/axios';
 import { Modal, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-
-
+import { jwtDecode } from "jwt-decode";
+import ApexCharts from 'apexcharts';
 
 function Dashboard() {
 
   const location = useLocation();
-    const [showLimitModal, setShowLimitModal] = useState(false);
+  const [showLimitModal, setShowLimitModal] = useState(false);
 const [usage, setUsage] = useState({ used: 0, limit: 5 });
 const navigate = useNavigate();
+
+
+var options = {
+  chart: {
+    type: 'line'
+  },
+  series: [{
+    name: 'sales',
+    data: [30,40,35,50,49,60,70,91,125]
+  }],
+  xaxis: {
+    categories: [1991,1992,1993,1994,1995,1996,1997, 1998,1999]
+  }
+}
+
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+
+chart.render();
+const isTokenExpired = (token) => {
+  if (!token) return true;
+
+  try {
+    const decoded = jwtDecode(token);
+    return decoded.exp * 1000 < Date.now();
+  } catch {
+    return true;
+  }
+};
+
+
+
+useEffect(() => {
+  const user = JSON.parse(sessionStorage.getItem("user"));
+  const token = user?.token;
+
+  if (!token || isTokenExpired(token)) {
+    sessionStorage.removeItem("user");
+    navigate("/login");
+  }
+}, [navigate]);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -73,7 +113,8 @@ const navigate = useNavigate();
               </h3>
               <p>Income</p>
               <p>Expense</p>
-              <img src={Image1} alt='profit&loss'/>
+              <div id='chart'></div>
+              {/* <img src={Image1} alt='profit&loss'/> */}
         </div>
         <Modal show={showLimitModal} backdrop="static"  centered>
   <Modal.Header>
