@@ -5,10 +5,10 @@ import styles from "./Subscription.module.css";
 import DashBoardLayout from './DashBoardLayout';
 
 const plans = [
-  { name: "30 days", price: 5000 },
-  { name: "90 days", price: 10000 },
-  { name: "6 months", price: 20000 },
-  { name: "1 year", price: 30000 },
+  { name: "30 days", price: 50000 },
+  { name: "90 days", price: 100000 },
+  { name: "6 months", price: 200000 },
+  { name: "1 year", price: 300000 },
 ];
 
 export default function SubscriptionPage() {
