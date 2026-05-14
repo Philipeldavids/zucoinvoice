@@ -6,6 +6,7 @@ import styles from './InvoiceList.module.css';
 import { NavLink } from 'react-router-dom';
 import axios from '../api/axios';
 import Image from '../assets/Frame.png';
+import Image2 from '../assets/edit-button-svgrepo-com.svg';
 import logo from '../assets/zucoinvoiceapplogo.png';
 import QRCode from 'qrcode';
 
@@ -268,22 +269,7 @@ if (qrImage) {
 
 
       
-    // download pdf
-
-//     const downloadPDF = async (invoiceId) => {
-//     const pdfBlob = await generatePDF(invoiceId);
-//     const pdfURL = URL.createObjectURL(pdfBlob);
-//     const link = document.createElement("a");
-//     link.href = pdfURL;
-//     link.download = `Invoice_${invoice.invoiceNumber}.pdf`;
-//     document.body.appendChild(link);
-//     link.click();
-//     document.body.removeChild(link);
-//   };
-
-
-
-  
+     
 const getInvoice = async (userId) => {
     try {
       const response = await axios.get(GETINVOICE_URL + userId);
@@ -444,6 +430,14 @@ const getInvoice = async (userId) => {
                     id={styles.delete}
                     onClick={() => handleDelete(invoice.invoiceID)}
                   />
+                  <NavLink to={`/editinvoice/${invoice.invoiceID}`}>
+                  <img
+                  src={Image2}
+                    alt="edit"
+                    id={styles.delete}
+    //  className={styles.editbtn}
+    />
+  </NavLink>
                   <button
                     type="button"
                     className={styles.addnewbtn}

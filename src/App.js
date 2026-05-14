@@ -14,6 +14,7 @@ import InvoicePage from './components/InvoicePage';
 import SubscriptionPage from './components/Subscription';
 import ForgotPassword from './components/ForgotPassword';
 import ResetPassword from './components/ResetPassword';
+import EditInvoice from './components/EditInvoice';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path="/signup" exact element={<SignUp/>}/>
           <Route path ="/createinvoice" exact element ={<Createinvoice/>}/>
           <Route path ="/invoicelist" exact element = {<InvoiceList/>}/>
+          <Route path="/editinvoice/:id" element={<EditInvoice />} />
           <Route path ="/contact" exact element = {<Contact/>}/>
           <Route path ="/usersettings" exact element ={<Settings/>} />
           <Route path ="/invoicepage" exact element = {<InvoicePage/>}/>
