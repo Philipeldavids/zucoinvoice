@@ -32,6 +32,7 @@ function CreateInvoice() {
   const { setInvoiceId } = useInvoice();
   const [taxdiff, setTaxDiff] = useState('');
 
+  const [editingItemId, setEditingItemId] = useState(null);
   const [show, setShow] = useState(false);
   const [user, setUser] = useState();
   const [name, setName] = useState('');
@@ -140,6 +141,14 @@ function CreateInvoice() {
   };
 
   useEffect(() => {
+    const qty = parseFloat(quantity) || 0;
+    const unitPrice = parseFloat(price) || 0;
+    const disc = parseFloat(discount) || 0;
+
+    setAmount((qty * unitPrice - disc).toFixed(2));
+}, [quantity, price, discount]);
+
+  useEffect(() => {
   const subTota = items.reduce((acc, element) => acc + parseFloat(element.amount || 0), 0);
   setSubTotal(subTota.toFixed(2));
 
@@ -197,32 +206,62 @@ const getClientTin = (e) => {
     }
   };
 
-  const addItem = (e) => {
+  const handleEdit = (item) => {
+  setDescription(item.description);
+  setQuantity(item.quantity);
+  setPrice(item.unitprice);
+  setDiscount(item.discount);
+  setAmount(item.amount);
+
+  setEditingItemId(item.id);
+};
+ const addItem = (e) => {
     e.preventDefault();
 
-    if (description.trim() && quantity !== '' && price !== '' && discount !== '') {
-      setItems([
-        ...items,
-        {
-          id: uuidv4(),
-          description,
-          quantity,
-          discount,
-          unitprice: price,
-          amount,
-        },
-      ]);
-
-      setShowItem(true);
-      setDescription('');
-      setPrice('');
-      setAmount('');
-      setQuantity('');
-      setDiscount('');
-    } else {
-      alert("Please complete values before adding item");
+    if (
+        !description.trim() ||
+        quantity === "" ||
+        price === "" ||
+        discount === ""
+    ) {
+        alert("Please complete values before adding item");
+        return;
     }
-  };
+
+    const newItem = {
+        id: editingItemId || uuidv4(),
+        description,
+        quantity,
+        discount,
+        unitprice: price,
+        amount,
+    };
+
+    if (editingItemId) {
+
+        // Update existing row
+        setItems(
+            items.map((item) =>
+                item.id === editingItemId ? newItem : item
+            )
+        );
+
+        setEditingItemId(null);
+
+    } else {
+
+        // Add new row
+        setItems([...items, newItem]);
+    }
+
+    setShowItem(true);
+
+    setDescription("");
+    setQuantity("");
+    setPrice("");
+    setDiscount("");
+    setAmount("");
+};
 
   const handleDelete = (id) => {
     setItems(items.filter((x) => x.id !== id));
@@ -253,12 +292,12 @@ const getClientTin = (e) => {
   reader.readAsDataURL(file);
 };
 
-  const handleCalc = () => {
-    const qty = parseFloat(quantity) || 0;
-    const prc = parseFloat(price) || 0;
-    const disc = parseFloat(discount) || 0;
-    setAmount(qty * prc - disc);
-  };
+  // const handleCalc = () => {
+  //   const qty = parseFloat(quantity) || 0;
+  //   const prc = parseFloat(price) || 0;
+  //   const disc = parseFloat(discount) || 0;
+  //   setAmount(qty * prc - disc);
+  // };
 
   const handleDiscard = () => {
     // ✅ Reset all invoice fields and states
@@ -404,7 +443,23 @@ for (let pair of formData.entries()) {
                      <li>{item.unitprice}</li>
                      <li>{item.discount}</li>
                      <li>{item.amount}</li>
-                     <li onClick={()=>handleDelete(item.id)}><img src={Image2} alt='delete' id={styles.delete}/></li>
+                     <li
+    style={{cursor:"pointer"}}
+    onClick={() => handleEdit(item)}
+>
+    ✏️
+</li>
+
+<li
+    style={{cursor:"pointer"}}
+    onClick={() => handleDelete(item.id)}
+>
+    <img
+        src={Image2}
+        alt="delete"
+        id={styles.delete}
+    />
+</li>
             </ul>
         )))       
     }
@@ -412,9 +467,15 @@ for (let pair of formData.entries()) {
             <li><input type='text' value={description} onChange={(e)=>setDescription(e.target.value)} id={styles.itemdescription} placeholder='Enter Description'></input></li>
             <li><input type='number' value={quantity} onChange={(e)=>setQuantity(e.target.value)} id={styles.quantity} placeholder='0'></input></li>
             <li><input type='text' value={price} onChange={(e)=>setPrice(e.target.value)} id={styles.unitprice} placeholder='0'></input></li>
-            <li><input type='text' value={discount}  onChange={(e)=>setDiscount(e.target.value)} onKeyUp={handleCalc} id={styles.discount} placeholder='0'></input></li>
+            <li><input type='text' value={discount}  onChange={(e)=>setDiscount(e.target.value)} id={styles.discount} placeholder='0'></input></li>
             <li><input type='text' value={amount} id={styles.amount} placeholder='0'readOnly></input></li>
-            <button type='submit' onClick={addItem} className={styles.addnewbtn}>ADD</button>
+           <button
+    type="submit"
+    onClick={addItem}
+    className={styles.addnewbtn}
+>
+    {editingItemId ? "UPDATE" : "ADD"}
+</button>
         </ul>
         </div>
     
