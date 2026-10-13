@@ -33,29 +33,41 @@ const location = useLocation();
   },[location])
 
   // ✅ Fetch countries
-  useEffect(() => {
-    const fetchCountries = async () => {
-      try {
-        const response = await axios.get("https://restcountries.com/v3.1/all?fields=name,cca2,idd,flags");
-        const data = await response.data;
+ 
+useEffect(() => {
+  const fetchCountries = async () => {
+    try {
+      const response = await fetch(
+        "https://api.restcountries.com/countries/v5?response_fields=names.common,codes.alpha_2,flag.emoji&limit=100",
+      
+      { headers: { 'Authorization': 'Bearer rc_live_f4df8bf3a9044ba69d93064ed45ce7e4' }
+     } )
+    ;
 
-        // filter out invalid entries and build dial codes properly
-        const countries = data.map((country) => ({
-  code: country.cca2,
-  name: country.name.common,
-  dial_code: country.idd?.root
-    ? country.idd.root + (country.idd.suffixes ? country.idd.suffixes[0] : "")
-    : "",
-  flag: country.flags?.png,
-}));
-setCountriesList(countries);
-      } catch (error) {
-        console.error('Error fetching countries:', error);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch countries: ${response.status}`);
       }
-    };
 
-    fetchCountries();
-  }, []);
+      const data = await response.json();
+      console.log(data);
+      const countryList = data
+        .map((country) => ({
+          code: country.codes?.alpha_2 || "",
+          name: country.names?.common || "",
+          dial_code: "",
+          flag: country.flag?.emoji || "",
+        }))
+        .filter((country) => country.code && country.name)
+        .sort((a, b) => a.name.localeCompare(b.name));
+
+      setCountriesList(countryList);
+    } catch (error) {
+      console.error("Failed to fetch countries:", error);
+    }
+  };
+
+  fetchCountries();
+}, []);
 
   // ✅ Map options for react-select
  const options = countriesList.map((country) => ({

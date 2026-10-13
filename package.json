@@ -13,6 +13,7 @@
     "apexcharts": "^5.10.6",
     "axios": "^1.5.0",
     "bootstrap": "^5.3.3",
+    "country-codes-list": "^3.2.0",
     "jspdf": "^2.5.2",
     "jspdf-autotable": "^3.8.4",
     "jwt-decode": "^4.0.0",
