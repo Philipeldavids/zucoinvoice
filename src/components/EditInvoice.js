@@ -52,7 +52,7 @@ const { id } = useParams();
 
 useEffect(() => {
   fetchInvoice();
-}, [id]);
+}, [id, fetchInvoice]);
 
 const fetchInvoice = async () => {
   try {
