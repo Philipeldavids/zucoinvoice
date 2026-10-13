@@ -40,8 +40,8 @@ useEffect(() => {
       const response = await fetch(
         "https://api.restcountries.com/countries/v5?response_fields=names.common,codes.alpha_2,flag.emoji&limit=100",
       
-      { headers: { 'Authorization': 'Bearer rc_live_f4df8bf3a9044ba69d93064ed45ce7e4' }
-     } )
+      { headers: { 'Authorization': 'Bearer rc_live_83c1ee5a25a641a8b00c4e8c0880f1ed' }
+     })
     ;
 
       if (!response.ok) {
