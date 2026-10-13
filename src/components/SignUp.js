@@ -50,7 +50,7 @@ useEffect(() => {
 
       const data = await response.json();
       console.log(data);
-      const countryList = data
+      const countryList = data.data.objects
         .map((country) => ({
           code: country.codes?.alpha_2 || "",
           name: country.names?.common || "",
