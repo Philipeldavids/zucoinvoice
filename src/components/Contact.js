@@ -6,6 +6,7 @@ import { Modal, Button } from "react-bootstrap";
 import DeleteIcon from "../assets/Frame.png"; // same delete icon used in invoice list
 import { useNavigate } from 'react-router-dom';
 import EditIcon from "../assets/edit-button-svgrepo-com.svg";
+import {toast} from 'sonner';
 
 function Contact() {
   const [name, setName] = useState("");
@@ -45,13 +46,15 @@ const handleEditChange = (e) => {
 const handleSaveEdit = async () => {
   try {
     await axios.put(`api/v1/contact/EditContact/${selectedContact.contactId}`, selectedContact);
-    alert("Contact updated successfully!");
+    toast.success("Contact updated successfully");
+    //alert("Contact updated successfully!");
     setIsEditModalOpen(false);
     // Refresh contact list after save
     getContacts(user?.id);
   } catch (error) {
     console.error("Error updating contact:", error);
-    alert("Failed to update contact.");
+    toast.error("Failed to update contact");
+    //alert("Failed to update contact.");
   }
 };
 
@@ -87,7 +90,8 @@ const handleSaveEdit = async () => {
         setContacts(response.data);
         setFilteredContacts(response.data);
       } else {
-        alert("Error fetching contacts");
+        toast.error("Error fetching contacts")
+       // alert("Error fetching contacts");
       }
     } catch (error) {
       console.log("error:", error);
@@ -133,10 +137,12 @@ const handleSaveEdit = async () => {
     try {
       const response = await axios.delete(DELETECONTACT_URL + Id);
       if (response.status === 200) {
-        alert("Contact deleted successfully");
+        toast.success("Contact deleted successfully");
+        //alert("Contact deleted successfully");
         getContacts(user?.id);
       } else {
-        alert("Error deleting contact");
+        toast.error("Error deleting contact");
+        //alert("Error deleting contact");
       }
     } catch (error) {
       console.log("error:", error);

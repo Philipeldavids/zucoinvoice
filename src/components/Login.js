@@ -5,7 +5,7 @@ import { NavLink, useLocation} from 'react-router-dom';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Logo from '../assets/zucoinvoiceapplogo.png';
-
+//import { toast } from 'sonner';
 
 function Login() {
   const location = useLocation();
@@ -44,14 +44,17 @@ function Login() {
         window.location.href = res.data.paymentUrl;// redirect to Paystack checkout
           //navigate("/dashboard");
         } else {
-        alert(`✅ Successfully subscribed to ${plan} plan!`);
+          toast.success(`✅ Successfully subscribed to ${plan} plan!`);
+        //alert(`✅ Successfully subscribed to ${plan} plan!`);
         }
         } else {
-        alert("❌ Failed to activate plan. Please try again.");
+          toast.error("❌ Failed to activate plan. Please try again.");
+        //alert("❌ Failed to activate plan. Please try again.");
         }
       } catch (err) {
       console.error("Subscription error:", err);
-      alert("Something went wrong while selecting your plan.");
+      toast.error("Something went wrong while selecting your plan.");
+      //alert("Something went wrong while selecting your plan.");
       }
       };
 
@@ -126,7 +129,8 @@ function Login() {
         window.location.href = `/dashboard`;
       }
       else{
-        alert("Incorrect Credentials");
+        toast.error("Incorrect Credentials");
+        //alert("Incorrect Credentials");
           };    
       }
     

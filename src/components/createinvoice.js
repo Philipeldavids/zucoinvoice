@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from "uuid";
 import { useInvoice } from "../context/InvoiceContext";
 import { Modal, Button, Spinner } from 'react-bootstrap';
+import { toast } from 'sonner';
 
 function CreateInvoice() {
   const [tin, setTin] = useState('');
@@ -132,7 +133,8 @@ function CreateInvoice() {
 
       if (response.status === 200) {
         handleClose();
-        alert("Contact created successfully");
+        toast.success("Contact created successfully");
+        //alert("Contact created successfully");
         getContact(user?.id);
       }
     } catch (error) {
@@ -224,7 +226,8 @@ const getClientTin = (e) => {
         price === "" ||
         discount === ""
     ) {
-        alert("Please complete values before adding item");
+      toast.error("Please complete values before adding item");
+        //alert("Please complete values before adding item");
         return;
     }
 
@@ -315,13 +318,15 @@ const getClientTin = (e) => {
     setItems([]);
     setShowItem(false);
     
-    alert("Invoice discarded successfully.");
+    toast.success("Invoice discarded successfully");
+    //alert("Invoice discarded successfully.");
   };
 
   const handleCreate = async (e) => {
     e.preventDefault();
     if (!contact || items.length === 0) {
-      alert("Please select a contact and add at least one item.");
+      toast.error("Please select a contact and add at least one item");
+      //alert("Please select a contact and add at least one item.");
       return;
     }
 
@@ -357,14 +362,17 @@ for (let pair of formData.entries()) {
         localStorage.setItem(key, imageUrl);   // ✅ small + safe
         setPreview(imageUrl);        
        // setPreview(response.data.imageURl);
-        alert('Invoice Creation Successful');
+       toast.success("Invoice Creation Successful"); 
+      // alert('Invoice Creation Successful');
         navigate("/invoicepage");
       } else {
-        alert('Invoice Creation failed');
+        toast.error("Invoice creation failed");
+       //alert('Invoice Creation failed');
       }
     } catch (error) {
       console.error('Creation error:', error);
-      alert('Error creating invoice.');
+      toast.error("Error creating invoice");
+      //alert('Error creating invoice.');
     } finally {
       setLoading(false); // ✅ Hide spinner
     }

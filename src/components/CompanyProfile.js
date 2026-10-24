@@ -3,6 +3,7 @@ import axios from "../api/axios";
 import styles from "./CompanyProfile.module.css";
 import DashBoardLayout from './DashBoardLayout';
 import { useNavigate } from 'react-router-dom';
+//import { toast } from 'react-toastify';
 
 export default function CompanyProfile() {
   const [form, setForm] = useState({
@@ -68,7 +69,8 @@ await axios.post("api/v1/settings/savecompany", form, {
     Authorization: `Bearer ${token}`,
   },
 });
-    alert("Company settings saved!");
+    //toast.success("Company settings saved");
+   alert("Company settings saved!");
   };
 
   return (
